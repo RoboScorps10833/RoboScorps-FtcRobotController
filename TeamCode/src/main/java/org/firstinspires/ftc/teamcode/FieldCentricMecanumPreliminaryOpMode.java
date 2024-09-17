@@ -1,6 +1,3 @@
-package org.firstinsires.ftc.teamcode;
-
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /*
  * Made by Pearl Kamalu on June 3, following the tutorial on
@@ -12,90 +9,80 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * 
  */
 
- @TeleOp
+package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+@TeleOp
 public class FieldCentricMecanumPreliminaryOpMode extends LinearOpMode {
-
-    // Primatives and References
-private Gryroscope imu;
-
-    private DcMotor frontLeftMotor;
-    private DcMotor frontRightMotor;
-    private DcMotor backLeftMotor;
-    private DcMotor backRightMotor;
-
     @Override
-    public void runOpMode () {
-        // Set up IMU
-        imu = hardwareMap.get(IMU.class, "imu");
+    public void runOpMode() throws InterruptedException {
+        // Declare our motors
+        // Make sure your ID's match your configuration
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("FrontLeftMotor");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("BackLeftMotor");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("FrontRightMotor");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("BackRightMotor");
+
+        // Reverse the right side motors. This may be wrong for your setup.
+        // If your robot moves backwards when commanded to go forwards,
+        // reverse the left side instead.
+        // See the note about this earlier on this page.
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        // Retrieve the IMU from the hardware map
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+        // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-            RevHubOrientationOnRobot.LogoFacingDirection.UP,
-            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
-        ));
-        imu.initalize(parameters);
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
+        imu.initialize(parameters);
 
-        // Set Up Motors, but we need to set these up and make sure these work.
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
-        frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
-        backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-        backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
+        waitForStart();
 
-        // Reverse the motors and see if they work
-        frontRightMotor.setDirecton(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirecton(DcMotorSimple.Direction.REVERSE);
+        if (isStopRequested()) return;
 
-        // Telemetry
-        telemetry.addData("Status", "Initalized");
-        telemetry.update();
-
-        waitForStart(); 
         while (opModeIsActive()) {
-            // Variables
-            // Left stick is used for controling planar motion
-            // Right stick is used for turn, but only using x axis to get variable speed
+            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
+            double x = gamepad1.left_stick_x;
+            double rx = gamepad1.right_stick_x;
 
-            // Strafing is slower than forwards b/c of lost friction, reqiring more power and thus scaling
-            // Adjust this value for driver's preverence
-            double strafeScale = 1.2; 
-
-            double forwardPower = -gamepad1.left_stick_y; // Y is reversed
-            double strafePower = gamepad1.left_stick_x * strafeScale; // Strafe = sideways power.
-
-            double turnPower = gamepad1.right_stick_x; 
-
+            // This button choice was made so that it is hard to hit on accident,
+            // it can be freely changed based on preference.
+            // The equivalent button is start on Xbox-style controllers.
             if (gamepad1.options) {
                 imu.resetYaw();
-                // Reset yaw button because of drift. 
-                // Is options button to make it hard to hit.
             }
 
-            // Calculate for headings
-            double robotHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-            
-            double rotationalX = forwardPower * Math.cos(-robotHeading) - y * Math.sin(-robotHeading);
-            double rotationalY = forwardPower * Math.sin(-robotHeading) + y * Math.cos(-robotHeading);
+            double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
+            // Rotate the movement direction counter to the bot's rotation
+            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
-            // SDK clips power at 1, so we need to scale everything else down
-            // Divde everything by largest number, so largest number will be one
-            double denominator = Math.max(Math.abs(rotationalX) + Math.abs(rotationalY) + Math.abs(turnPower), 1);
+            rotX = rotX * 1.1;  // Counteract imperfect strafing
 
-            // See gm0's page for mecanum wheels for why.
-                // Make `forwardPower` negative if this is the fact.
-                // for troubleshooting, comment out everything after forward power and see if they go in correct direction
-            double frontLeftMotorPower = (rotationalY + rotationalX + turnPower) / denominator; 
-            double frontRightMotorPower = (rotationalY - rotaiotnalX - turnPower) / denominator;
-            double backLeftMotorPower = (rotationalY - rotationalX - turnPower) / denominator;     
-            double backRightMotorPower =  (rotationalY + rotationalX - turnPower) / denominator;
-            
-            // See gm0's page for mecanum wheels for why.
-            // Make `forwardPower` negative if this is the fact.
-            // for troubleshooting, comment out everything after forward power and see if they go in correct direction
-            frontLeftMotor.setPower(frontLeftMotorPower);
-            frontRightMotor.setPower(frontRightMotorPower);
-            backLeftMotor.setPower(backLeftMotorPower);
-            backRightMotor.setPower(backRightMotorPower);
+            // Denominator is the largest motor power (absolute value) or 1
+            // This ensures all the powers maintain the same ratio,
+            // but only if at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+            double frontLeftPower = (rotY + rotX + rx) / denominator;
+            double backLeftPower = (rotY - rotX + rx) / denominator;
+            double frontRightPower = (rotY - rotX - rx) / denominator;
+            double backRightPower = (rotY + rotX - rx) / denominator;
 
+            frontLeftMotor.setPower(frontLeftPower);
+            backLeftMotor.setPower(backLeftPower);
+            frontRightMotor.setPower(frontRightPower);
+            backRightMotor.setPower(backRightPower);
         }
     }
 }
