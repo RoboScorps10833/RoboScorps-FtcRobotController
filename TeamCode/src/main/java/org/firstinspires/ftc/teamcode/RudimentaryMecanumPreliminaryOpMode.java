@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hadrware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /*
  * Made by Peark Kamalu on May 31 2024. 
@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hadrware.DcMotorSimple;
  * 
  * 
  */
-
+/*
 @TeleOp
 
 public class RudimentaryMecanumPreliminaryOpMode extends LinearOpMode {
@@ -97,3 +97,4 @@ public class RudimentaryMecanumPreliminaryOpMode extends LinearOpMode {
         }
     }
 }
+*/

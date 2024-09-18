@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+/*
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+ */
 
 /*
  * Made by Pearl on May 31, 2024 following FTC documentation
@@ -8,6 +10,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  */
 
 // This is called an anotation, which tells the mode of the Operation Mode
+/*
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Gyroscope;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp // Happens with a controler and a Driver
 //@Automous // Makes the roboot run by itself
@@ -57,3 +67,5 @@ public class TestJavaOpMode extends LinearOpMode {
     }
 
 }
+
+ */
