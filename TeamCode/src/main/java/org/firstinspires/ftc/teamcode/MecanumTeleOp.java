@@ -3,7 +3,8 @@
  * Made by Pearl Kamalu on June 3, following the tutorial on
  * game manual 0 for field centric controls.
  * 
- * https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
+ * https://gm0.org/en/latest/docs/softw
+ * are/tutorials/mecanum-drive.html
  *  
  * Single controler Operation Mode
  * 
@@ -18,6 +19,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
+
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -58,6 +60,9 @@ public class MecanumTeleOp extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
+
         }
     }
 }
+
+
