@@ -18,7 +18,7 @@ public class RobotOpMode extends LinearOpMode {
     private DcMotor frontRightMotor;
     private DcMotor backRightMotor;
 
-    private void setup() {
+    private void deviceSetup() {
         /*
          * All setup things should be called here
          */
@@ -35,31 +35,15 @@ public class RobotOpMode extends LinearOpMode {
 
     }
 
-    public void steer(double x, double y, double rx) {
-        /*
-        * A basic function that steers the robot based on a vector `(x,y)`
-        * and an angle of rotation `rx`
-        */
+    // Classes
+    DriveTrain driveTrain;
+    driveTrain = new DriveTrain(this.frontLeftMotor, this.frontRightMotor, this.backLeftMotor, this.backRightMotor);
 
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
-
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
-    }
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        setup();
+        deviceSetup();
 
         // Boilerplate
 
