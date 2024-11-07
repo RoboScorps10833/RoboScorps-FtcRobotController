@@ -1,4 +1,5 @@
 
+
 /*
  * Made by Pearl Kamalu on June 3, following the tutorial on
  * game manual 0 for field centric controls.
@@ -7,7 +8,10 @@
  * are/tutorials/mecanum-drive.html
  *  
  * Single controler Operation Mode
- * 
+ *
+ * Note that this is an old opmode for intital driving of
+ * the mecanum driving of the motors. Please don't use this
+ *
  */
 
 package org.firstinspires.ftc.teamcode;
@@ -18,10 +22,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
-public class MecanumTeleOp extends LinearOpMode {
+public class LegacyMecanumTeleOp extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        // Using Configuration "BasicConfiguration"
+
         // Declare our motors
         // Make sure your ID's match your configuration
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("FrontLeftMotor");
