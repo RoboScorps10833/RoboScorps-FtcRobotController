@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.controlsystem.StateMachine;
  * like the claw, arm, and other things.
  */
 public class Robot {
-    ProgrammingBoard board;
-    StateMachine stateMachine;
+    private ProgrammingBoard board;
+    private StateMachine stateMachine;
 
     /**
      * Constructor for the robot class
