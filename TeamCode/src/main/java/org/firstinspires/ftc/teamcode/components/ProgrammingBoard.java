@@ -57,6 +57,12 @@ public class ProgrammingBoard {
         backLeftMotor = drivetrainMotors[2];
         backRightMotor = drivetrainMotors[3];
 
+        /*TODO:
+        *  Tune the motors for FtcLib
+        *  Set the Coeffecents for every motor
+        *  Set the mode of each motor
+        * */
+
         // I'm not sure where the USB is facing, but this is OK for now.
         RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
