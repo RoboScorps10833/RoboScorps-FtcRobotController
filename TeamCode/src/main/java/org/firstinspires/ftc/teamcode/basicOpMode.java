@@ -32,7 +32,6 @@ public class basicOpMode extends OpMode {
         stateMachine.initialize();
         robot.initialize();
 
-
     }
 
     @Override
@@ -40,6 +39,7 @@ public class basicOpMode extends OpMode {
         // update state machine stuff here
         // also multithreading(??) --> future problem.
     }
+
 
     @Override
     public void loop() {
