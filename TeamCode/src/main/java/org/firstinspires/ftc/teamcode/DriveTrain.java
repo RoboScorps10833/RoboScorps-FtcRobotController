@@ -47,10 +47,10 @@ public class DriveTrain {
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
+        this.FrontLeftMotor.setPower(frontLeftPower);
+        this.FrontRightMotor.setPower(backLeftPower);
+        this.BackLeftMotor.setPower(frontRightPower);
+        this.BackRightMotor.setPower(backRightPower);
     }
 
 
