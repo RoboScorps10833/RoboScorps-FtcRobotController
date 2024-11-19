@@ -33,9 +33,9 @@ public class LinearExtenderTeleOpMode extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad2.dpad_up){
+        if (gamepad1.dpad_up){
             position = position + change_position;
-        } else if (gamepad2.dpad_down) {
+        } else if (gamepad1.dpad_down) {
             position = position + change_position;
         }
         linearExtenderServo.setPosition(position);

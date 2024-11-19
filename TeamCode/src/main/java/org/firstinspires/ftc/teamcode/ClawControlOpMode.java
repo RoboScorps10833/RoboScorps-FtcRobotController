@@ -36,9 +36,9 @@ public class ClawControlOpMode extends OpMode {
         // Opening/closing claw
 
         // I literally don't know why the trigger is a float, but here it is...
-        if (gamepad2.left_trigger > 0.9) {
+        if (gamepad1.left_trigger > 0.9) {
             clawOpenState = true;
-        } else if (gamepad2.right_trigger > 0.9) {
+        } else if (gamepad1.right_trigger > 0.9) {
             clawOpenState = false;
         }
 
@@ -50,9 +50,9 @@ public class ClawControlOpMode extends OpMode {
 
         // rotating claw
 
-        if (gamepad2.right_bumper) {
+        if (gamepad1.right_bumper) {
             rotatorPosition = rotatorPosition + deltaPosition;
-        } else if (gamepad2.left_bumper) {
+        } else if (gamepad1.left_bumper) {
             rotatorPosition = rotatorPosition - deltaPosition;
         }
 
