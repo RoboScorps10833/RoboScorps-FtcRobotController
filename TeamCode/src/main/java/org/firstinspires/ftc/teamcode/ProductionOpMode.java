@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
-public class MecanumWithInverseTeleOp extends LinearOpMode {
+public class ProductionOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors

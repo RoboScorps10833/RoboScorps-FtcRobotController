@@ -27,6 +27,8 @@ public class MecanumWithInverseTeleOp extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("FrontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("BackRightMotor");
 
+        DcMotor armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
@@ -36,6 +38,8 @@ public class MecanumWithInverseTeleOp extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        double regularMultiplyer = 0.5;
+
         waitForStart();
 
         boolean inverseControlState = false;
@@ -43,7 +47,7 @@ public class MecanumWithInverseTeleOp extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            if (gamepad1.a) {
+            if (gamepad1.dpad_down) {
                 inverseControlState = true;
             }
 
@@ -70,6 +74,14 @@ public class MecanumWithInverseTeleOp extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
+
+            if (gamepad1.x) { // going up
+                armMotor.setPower(regularMultiplyer);
+            } if (gamepad1.y) { // going down
+                armMotor.setPower(-regularMultiplyer);
+            } else {
+                armMotor.setPower(0);
+            }
         }
     }
 }

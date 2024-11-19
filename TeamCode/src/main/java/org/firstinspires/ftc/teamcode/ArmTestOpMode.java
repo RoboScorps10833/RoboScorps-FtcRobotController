@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ArmTestOpMode extends OpMode {
     DcMotor armMotor;
     double power = 0.75;
-    boolean flipped = false;
+    boolean flipped = true;
 
 
     @Override
