@@ -13,6 +13,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -38,7 +39,13 @@ public class ProductionOpMode extends LinearOpMode {
         frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        double regularMultiplyer = 0.5;
+        // Arm
+        double armPower = 0.5;
+
+        CRServo linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
+        linearExtenderServo.setPower(0);
+        double servoPower = 0.5;
+
 
         waitForStart();
 
@@ -47,10 +54,12 @@ public class ProductionOpMode extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+            // Inversion
             if (gamepad1.dpad_down) {
                 inverseControlState = true;
             }
 
+            // Steering
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x; // Rotation is backwards
@@ -75,12 +84,22 @@ public class ProductionOpMode extends LinearOpMode {
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
 
-            if (gamepad1.x) { // going up
-                armMotor.setPower(regularMultiplyer);
-            } if (gamepad1.y) { // going down
-                armMotor.setPower(-regularMultiplyer);
+            // Arm
+            if (gamepad1.a) { // going up
+                armMotor.setPower(armPower);
+            } if (gamepad1.b) { // going down
+                armMotor.setPower(-armPower);
             } else {
                 armMotor.setPower(0);
+            }
+
+            // Linear Extender
+            if (gamepad1.x) {
+                linearExtenderServo.setPower(-servoPower);
+            } else if (gamepad1.y) {
+                linearExtenderServo.setPower(servoPower);
+            } else {
+                linearExtenderServo.setPower(0);
             }
         }
     }
