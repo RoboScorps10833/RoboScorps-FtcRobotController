@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class ProductionOpMode extends LinearOpMode {
@@ -46,6 +47,23 @@ public class ProductionOpMode extends LinearOpMode {
         linearExtenderServo.setPower(0);
         double servoPower = 0.5;
 
+        Servo clawRotatorServo;
+        Servo clawOpenerServo;
+
+        // Opener stuff
+        boolean clawOpenState = false;
+        double clawClosedPosition = 0.0;
+        double clawOpenPosition = 0.9;
+
+        // Rotation stuff
+        double rotatorPosition = 0.5; // always set to start in middle
+        double deltaPosition = 0.001;
+
+        clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
+        clawOpenerServo.setPosition(clawClosedPosition);
+
+        clawRotatorServo = hardwareMap.get(Servo.class, "ClawRotatorServo");
+        clawRotatorServo.setPosition(rotatorPosition);
 
         waitForStart();
 
@@ -101,6 +119,45 @@ public class ProductionOpMode extends LinearOpMode {
             } else {
                 linearExtenderServo.setPower(0);
             }
+
+            // Opening/closing claw
+
+            // I literally don't know why the trigger is a float, but here it is...
+            if (gamepad1.left_trigger > 0.9) {
+                clawOpenState = true;
+                // telemetry.addData("OPENSTATE", "on");
+            }
+            if (gamepad1.right_trigger > 0.9) {
+                clawOpenState = false;
+                //telemetry.addData("OPENSTATE", "off");
+            }
+
+            //telemetry.addData("LeftController", gamepad1.left_trigger);
+            //telemetry.addData("right controller", gamepad1.right_trigger);
+
+
+            if (clawOpenState == true) {
+                clawOpenerServo.setPosition(clawOpenPosition);
+                //telemetry.addData("Claw Action", "Open");
+            }
+            if (!clawOpenState){
+                clawOpenerServo.setPosition(clawClosedPosition);
+                //telemetry.addData("Claw Action", "Close");
+            }
+
+            // rotating claw
+
+            if (gamepad1.right_bumper) {
+                rotatorPosition = rotatorPosition + deltaPosition;
+               // telemetry.addData("RotatorPosition", rotatorPosition);
+               // telemetry.addData("rotator button", "right");
+            } else if (gamepad1.left_bumper) {
+                rotatorPosition = rotatorPosition - deltaPosition;
+               //telemetry.addData("RotatorPosition", rotatorPosition);
+               // telemetry.addData("RotatorPosition", "left");
+            }
+
+            clawRotatorServo.setPosition(rotatorPosition);
         }
     }
 }
