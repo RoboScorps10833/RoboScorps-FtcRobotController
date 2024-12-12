@@ -56,25 +56,35 @@ public class ProductionOpMode extends LinearOpMode {
         double clawOpenPosition = 0.9;
 
         // Rotation stuff
-        double rotatorPosition = 0.5; // always set to start in middle
+        double rotatorPosition = 0.60; // always set to start in middle
         double deltaPosition = 0.001;
+
+        Servo clawPlacementServo;
+        double outer_position = 0.25;
 
         clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
         clawOpenerServo.setPosition(clawClosedPosition);
 
-        clawRotatorServo = hardwareMap.get(Servo.class, "ClawRotatorServo");
-        clawRotatorServo.setPosition(rotatorPosition);
+        clawRotatorServo = hardwareMap.get(Servo.class, "ClawPlacementServo");
+        //clawRotatorServo.setPosition(rotatorPosition);
+
+        //clawPlacementServo = hardwareMap.get(Servo.class,"ClawPlacementServo");
+        //clawPlacementServo.setDirection(Servo.Direction.REVERSE);
+
 
         waitForStart();
 
-        boolean inverseControlState = false;
+        boolean inverseControlState = true;
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+            //clawPlacementServo.setPosition(outer_position);
+
+
             // Inversion
             if (gamepad1.dpad_down) {
-                inverseControlState = true;
+                inverseControlState = !inverseControlState;
             }
 
             // Steering
@@ -85,7 +95,7 @@ public class ProductionOpMode extends LinearOpMode {
             if (inverseControlState) {
                 y = y * -1;
                 x = x * -1;
-                rx = rx * -1;
+                //rx = rx * -1;
             }
 
             // Denominator is the largest motor power (absolute value) or 1
@@ -103,18 +113,18 @@ public class ProductionOpMode extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
 
             // Arm
-            if (gamepad1.a) { // going up
+            if (gamepad2.x) { // going up
                 armMotor.setPower(armPower);
-            } if (gamepad1.b) { // going down
+            } if (gamepad2.y) { // going down
                 armMotor.setPower(-armPower);
             } else {
                 armMotor.setPower(0);
             }
 
             // Linear Extender
-            if (gamepad1.x) {
+            if (gamepad2.b) {
                 linearExtenderServo.setPower(-servoPower);
-            } else if (gamepad1.y) {
+            } else if (gamepad2.a) {
                 linearExtenderServo.setPower(servoPower);
             } else {
                 linearExtenderServo.setPower(0);
@@ -123,17 +133,17 @@ public class ProductionOpMode extends LinearOpMode {
             // Opening/closing claw
 
             // I literally don't know why the trigger is a float, but here it is...
-            if (gamepad1.left_trigger > 0.9) {
+            if (gamepad2.left_trigger > 0.9) {
                 clawOpenState = true;
                 // telemetry.addData("OPENSTATE", "on");
             }
-            if (gamepad1.right_trigger > 0.9) {
+            if (gamepad2.right_trigger > 0.9) {
                 clawOpenState = false;
                 //telemetry.addData("OPENSTATE", "off");
             }
 
-            //telemetry.addData("LeftController", gamepad1.left_trigger);
-            //telemetry.addData("right controller", gamepad1.right_trigger);
+            //telemetry.addData("LeftController", gamepad2.left_trigger);
+            //telemetry.addData("right controller", gamepad2.right_trigger);
 
 
             if (clawOpenState == true) {
@@ -147,11 +157,11 @@ public class ProductionOpMode extends LinearOpMode {
 
             // rotating claw
 
-            if (gamepad1.right_bumper) {
+            if (gamepad2.right_bumper) {
                 rotatorPosition = rotatorPosition + deltaPosition;
                // telemetry.addData("RotatorPosition", rotatorPosition);
                // telemetry.addData("rotator button", "right");
-            } else if (gamepad1.left_bumper) {
+            } else if (gamepad2.left_bumper) {
                 rotatorPosition = rotatorPosition - deltaPosition;
                //telemetry.addData("RotatorPosition", rotatorPosition);
                // telemetry.addData("RotatorPosition", "left");
