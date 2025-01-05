@@ -5,26 +5,24 @@
  *
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-@Disabled
-public class ArmTestOpMode extends OpMode {
-    DcMotor armMotor;
+//@Disabled
+public class ClawOpenerTestMode extends OpMode {
+    Servo clawOpenerServo;
     double power = 0.75;
     boolean flipped = true;
 
 
     @Override
     public void init() {
-        armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
-        armMotor.setPower(power);
+        clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
+        clawOpenerServo.setPosition(0.5);
 
         if (flipped) {power = power * -1;}
     }

@@ -1,30 +1,34 @@
-package org.firstinspires.ftc.teamcode;
+/*
+ * A linear extender testing teleop. In order to test this, the servo for the
+ * linear extender and its bounds needs to be already set up.
+ *
+ * The up on the D pad is moving it up and down on the d pad makes it go down.
+ */
+
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+
 @TeleOp
 @Disabled
-public class LinearExtenderContinousOpMode extends OpMode {
+public class LinearExtenderContinousTeleOpMode extends OpMode {
     CRServo linearExtenderServo;
     double power = 0.5;
+    boolean flipped = false;
 
     @Override
     public void init() {
         linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
-        linearExtenderServo.setPower(0);
+        linearExtenderServo.setPower(power);
 
+        if (flipped) {power = power * -1;}
     }
 
     @Override
     public void loop() {
-        if (gamepad1.x) {
-            linearExtenderServo.setPower(-power);
-        } else if (gamepad1.y) {
-            linearExtenderServo.setPower(power);
-        } else {
-            linearExtenderServo.setPower(0);
-        }
+
     }
 }
