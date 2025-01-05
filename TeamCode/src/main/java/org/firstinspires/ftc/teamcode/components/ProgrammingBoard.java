@@ -1,95 +1,97 @@
 package org.firstinspires.ftc.teamcode.components;
 
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
-/**
- * A class that is used to wrap around all the components on the robot, as well as provide a way
- * to easily initialize all of the components in the robot when creating OpModes
- */
 public class ProgrammingBoard {
     /*
-     * TODO:
      *
-     * Need to implement the following things:
-     *   - motors
-     *     - drivetrain
-     *   - servo
-     *     - arm
-     *   - touch sensor
-     *     - armrest
-     *   - imu
      * In the future, I want to add some bling with LED and robot state,
      * with the LED strip color = robot state, but not now.
      * Would be fun to see for drivers.
      */
 
-    // Using FtcLib to provide methods
-    public MotorEx[] drivetrainMotors = new MotorEx[4];
-    // Aliases for motors
-    public MotorEx frontLeftMotor;
-    public MotorEx frontRightMotor;
-    public MotorEx backLeftMotor;
-    public MotorEx backRightMotor;
+    public DcMotor frontLeftMotor;
+    public DcMotor backLeftMotor;
+    public DcMotor frontRightMotor;
+    public DcMotor backRightMotor;
 
-    // might need to define the gamepad elsewhere, somehow
-    //public GamepadEx = new GamepadEx(gamepad1);
+    public DcMotor armMotor;
+    public double armPower;
 
-    public IMU imu;
+    public CRServo linearExtenderServo;
+    public double servoPower;
 
-    /**
-     * Abstracts the initialization of all the hardware on the robot
-     *
-     * @param hwMap plug in `hardwareMap` here
-     */
-    public void initialize(HardwareMap hwMap) {
-        drivetrainMotors[0] = new MotorEx(hwMap, "frontLeftMotor");
-        drivetrainMotors[1] = new MotorEx(hwMap, "frontRightMotor");
-        drivetrainMotors[2] = new MotorEx(hwMap, "backLeftMotor");
-        drivetrainMotors[3] = new MotorEx(hwMap, "backRightMotor");
+    public Servo clawRotatorServo;
+    public Servo clawOpenerServo;
 
-        frontLeftMotor = drivetrainMotors[0];
-        frontRightMotor = drivetrainMotors[1];
-        backLeftMotor = drivetrainMotors[2];
-        backRightMotor = drivetrainMotors[3];
+    public boolean clawOpenState;
+    public double clawClosedPosition;
+    public double clawOpenPosition;
 
-        /*TODO:
-        *  Tune the motors for FtcLib
-        *  Set the Coeffecents for every motor
-        *  Set the mode of each motor
-        * */
+    public double rotatorPosition;
+    public double deltaPosition;
+    public double outer_position;
 
-        // I'm not sure where the USB is facing, but this is OK for now.
-        RevHubOrientationOnRobot RevOrientation = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
-        );
+    //Servo clawPlacementServo;
 
-        imu.initialize(new IMU.Parameters(RevOrientation));
+    public boolean inverseControlState;
 
+    public void init(HardwareMap hardwareMap) {
+        // Declare our motors
+        // Make sure your ID's match your configuration
+        frontLeftMotor = hardwareMap.dcMotor.get("FrontLeftMotor");
+        backLeftMotor = hardwareMap.dcMotor.get("BackLeftMotor");
+        frontRightMotor = hardwareMap.dcMotor.get("FrontRightMotor");
+        backRightMotor = hardwareMap.dcMotor.get("BackRightMotor");
+
+        armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+
+        // Reverse the right side motors. This may be wrong for your setup.
+        // If your robot moves backwards when commanded to go forwards,
+        // reverse the left side instead.
+        // See the note about this earlier on this page.
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        // backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        // Arm
+        armPower = 0.5;
+
+        linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
+        linearExtenderServo.setPower(0);
+        servoPower = 0.5;
+
+        // Opener stuff
+        clawOpenState = false;
+        clawClosedPosition = 0.0;
+        clawOpenPosition = 0.9;
+
+        // Rotation stuff
+        rotatorPosition = 0.60; // always set to start in middle
+        deltaPosition = 0.001; // Miracle how this works because of floating point error
+
+        outer_position = 0.25;
+
+        clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
+        clawOpenerServo.setPosition(clawClosedPosition);
+
+        clawRotatorServo = hardwareMap.get(Servo.class, "ClawPlacementServo");
+        //clawRotatorServo.setPosition(rotatorPosition);
+
+        //clawPlacementServo = hardwareMap.get(Servo.class,"ClawPlacementServo");
+        //clawPlacementServo.setDirection(Servo.Direction.REVERSE);
+
+        inverseControlState = false;
     }
 
-    /* Gamepad methods */
-    // I would like to define them here, but I can't use gamepad1 nro 2 here
-    // implentation later problem
-
-
-    /* Motor Methods
-    *
-    * Using FtcLib to take care of this stuff, but might need some other wrappers
+    /*
+    * Going to control things on the robot in the robot class.
+    * OpMode calls robot, which calls hardware map
     */
-
-
-    /* Servos */
-
-
-    /* Touch Sensor */
-
-
-    /* imu */
 
 }

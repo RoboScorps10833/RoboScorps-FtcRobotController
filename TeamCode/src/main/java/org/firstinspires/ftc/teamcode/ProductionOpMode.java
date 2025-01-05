@@ -18,83 +18,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.components.ProgrammingBoard;
+
 @TeleOp
 public class ProductionOpMode extends OpMode {
-    DcMotor frontLeftMotor;
-    DcMotor backLeftMotor;
-    DcMotor frontRightMotor;
-    DcMotor backRightMotor;
-
-    DcMotor armMotor;
-    double armPower;
-
-    CRServo linearExtenderServo;
-    double servoPower;
-
-    Servo clawRotatorServo;
-    Servo clawOpenerServo;
-
-    boolean clawOpenState;
-    double clawClosedPosition;
-    double clawOpenPosition;
-
-    double rotatorPosition;
-    double deltaPosition;
-    double outer_position;
-
-    //Servo clawPlacementServo;
-
-    boolean inverseControlState;
-
+    ProgrammingBoard board = new ProgrammingBoard();
 
     @Override
     public void init() {
-        // Declare our motors
-        // Make sure your ID's match your configuration
-        frontLeftMotor = hardwareMap.dcMotor.get("FrontLeftMotor");
-        backLeftMotor = hardwareMap.dcMotor.get("BackLeftMotor");
-        frontRightMotor = hardwareMap.dcMotor.get("FrontRightMotor");
-        backRightMotor = hardwareMap.dcMotor.get("BackRightMotor");
-
-        armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
-
-        // Reverse the right side motors. This may be wrong for your setup.
-        // If your robot moves backwards when commanded to go forwards,
-        // reverse the left side instead.
-        // See the note about this earlier on this page.
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        // backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        // Arm
-        armPower = 0.5;
-
-        linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
-        linearExtenderServo.setPower(0);
-        servoPower = 0.5;
-
-        // Opener stuff
-        clawOpenState = false;
-        clawClosedPosition = 0.0;
-        clawOpenPosition = 0.9;
-
-        // Rotation stuff
-        rotatorPosition = 0.60; // always set to start in middle
-        deltaPosition = 0.001; // Miracle how this works because of floating point error
-
-        outer_position = 0.25;
-
-        clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
-        clawOpenerServo.setPosition(clawClosedPosition);
-
-        clawRotatorServo = hardwareMap.get(Servo.class, "ClawPlacementServo");
-        //clawRotatorServo.setPosition(rotatorPosition);
-
-        //clawPlacementServo = hardwareMap.get(Servo.class,"ClawPlacementServo");
-        //clawPlacementServo.setDirection(Servo.Direction.REVERSE);
-
-        inverseControlState = false;
+        board.init(hardwareMap);
     }
 
     @Override
@@ -104,7 +36,7 @@ public class ProductionOpMode extends OpMode {
 
         // Inversion
         if (gamepad1.dpad_down) {
-            inverseControlState = !inverseControlState;
+            board.inverseControlState = !board.inverseControlState;
         }
 
         // Steering
@@ -112,7 +44,7 @@ public class ProductionOpMode extends OpMode {
         double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x; // Rotation is backwards
 
-        if (inverseControlState) {
+        if (board.inverseControlState) {
             y = y * -1;
             x = x * -1;
             //rx = rx * -1;
@@ -127,38 +59,38 @@ public class ProductionOpMode extends OpMode {
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-        frontLeftMotor.setPower(frontLeftPower);
-        backLeftMotor.setPower(backLeftPower);
-        frontRightMotor.setPower(frontRightPower);
-        backRightMotor.setPower(backRightPower);
+        board.frontLeftMotor.setPower(frontLeftPower);
+        board.backLeftMotor.setPower(backLeftPower);
+        board.frontRightMotor.setPower(frontRightPower);
+        board.backRightMotor.setPower(backRightPower);
 
         // Arm
         if (gamepad2.x) { // going up
-            armMotor.setPower(armPower);
+            board.armMotor.setPower(board.armPower);
         } if (gamepad2.y) { // going down
-            armMotor.setPower(-armPower);
+            board.armMotor.setPower(-board.armPower);
         } else {
-            armMotor.setPower(0);
+            board.armMotor.setPower(0);
         }
 
         // Linear Extender
         if (gamepad2.b) {
-            linearExtenderServo.setPower(-servoPower);
+            board.linearExtenderServo.setPower(-board.servoPower);
         } else if (gamepad2.a) {
-            linearExtenderServo.setPower(servoPower);
+            board.linearExtenderServo.setPower(board.servoPower);
         } else {
-            linearExtenderServo.setPower(0);
+            board.linearExtenderServo.setPower(0);
         }
 
         // Opening/closing claw
 
         // I literally don't know why the trigger is a float, but here it is...
         if (gamepad2.left_trigger > 0.9) {
-            clawOpenState = true;
+            board.clawOpenState = true;
             // telemetry.addData("OPENSTATE", "on");
         }
         if (gamepad2.right_trigger > 0.9) {
-            clawOpenState = false;
+            board.clawOpenState = false;
             //telemetry.addData("OPENSTATE", "off");
         }
 
@@ -166,27 +98,27 @@ public class ProductionOpMode extends OpMode {
         //telemetry.addData("right controller", gamepad2.right_trigger);
 
 
-        if (clawOpenState) {
-            clawOpenerServo.setPosition(clawOpenPosition);
+        if (board.clawOpenState) {
+            board.clawOpenerServo.setPosition(board.clawOpenPosition);
             //telemetry.addData("Claw Action", "Open");
         }
-        if (!clawOpenState){
-            clawOpenerServo.setPosition(clawClosedPosition);
+        if (!board.clawOpenState){
+            board.clawOpenerServo.setPosition(board.clawClosedPosition);
             //telemetry.addData("Claw Action", "Close");
         }
 
         // rotating claw
 
         if (gamepad2.right_bumper) {
-            rotatorPosition = rotatorPosition + deltaPosition;
+            board.rotatorPosition = board.rotatorPosition + board.deltaPosition;
             // telemetry.addData("RotatorPosition", rotatorPosition);
             // telemetry.addData("rotator button", "right");
         } else if (gamepad2.left_bumper) {
-            rotatorPosition = rotatorPosition - deltaPosition;
+            board.rotatorPosition = board.rotatorPosition - board.deltaPosition;
             //telemetry.addData("RotatorPosition", rotatorPosition);
             // telemetry.addData("RotatorPosition", "left");
         }
 
-        clawRotatorServo.setPosition(rotatorPosition);
+        board.clawRotatorServo.setPosition(board.rotatorPosition);
     }
 }
