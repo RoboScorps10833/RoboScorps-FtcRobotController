@@ -1,7 +1,6 @@
 
 /*
- * Made by Pearl Kamalu on June 3, following the tutorial on
- * game manual 0 for field centric controls.
+ * Production OpMode for the RoboScorps' 2025 Season
  * 
  * https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
  *  
@@ -19,10 +18,15 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.components.ProgrammingBoard;
+import org.firstinspires.ftc.teamcode.mechanisms.Robot;
 
+/**
+ * The Production OpMode for the robot
+ */
 @TeleOp
 public class ProductionOpMode extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
+    Robot robot = new Robot();
 
     @Override
     public void init() {
@@ -30,67 +34,65 @@ public class ProductionOpMode extends OpMode {
     }
 
     @Override
+    public void start() {
+        // Against rules for robot to move before the match starts
+        // Using OpMode's start function
+        robot.init();
+    }
+
+    @Override
+    public void init_loop() {
+        robot.update();
+    }
+
+    @Override
     public void loop() {
-        //clawPlacementServo.setPosition(outer_position);
-
-
+        /*
+         * I guess I'm setting up keybindings here.
+         * Can't set up in robot class, since gamepad derives from OpMode
+         */
         // Inversion
         if (gamepad1.dpad_down) {
-            board.inverseControlState = !board.inverseControlState;
+            robot.inverseControls();
         }
 
         // Steering
         double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
         double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x; // Rotation is backwards
-
-        if (board.inverseControlState) {
-            y = y * -1;
-            x = x * -1;
-            //rx = rx * -1;
-        }
-
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
-
-        board.frontLeftMotor.setPower(frontLeftPower);
-        board.backLeftMotor.setPower(backLeftPower);
-        board.frontRightMotor.setPower(frontRightPower);
-        board.backRightMotor.setPower(backRightPower);
+        robot.steer(x,y,rx);
 
         // Arm
+
+        //0.5 is just a power value that works temperalrily
         if (gamepad2.x) { // going up
-            board.armMotor.setPower(board.armPower);
+            robot.setArmPower(0.5);
         } if (gamepad2.y) { // going down
-            board.armMotor.setPower(-board.armPower);
+            robot.setArmPower(-0.5);
         } else {
-            board.armMotor.setPower(0);
+            robot.setArmPower(0);
         }
 
         // Linear Extender
+
+        //0.5 is a power value that works so far
         if (gamepad2.b) {
-            board.linearExtenderServo.setPower(-board.servoPower);
+            robot.setLinearExtenderPower(-0.5);
         } else if (gamepad2.a) {
-            board.linearExtenderServo.setPower(board.servoPower);
+            robot.setLinearExtenderPower(0.5);
         } else {
-            board.linearExtenderServo.setPower(0);
+            robot.setLinearExtenderPower(0);
         }
 
         // Opening/closing claw
 
         // I literally don't know why the trigger is a float, but here it is...
         if (gamepad2.left_trigger > 0.9) {
-            board.clawOpenState = true;
+            robot.openClaw();
             // telemetry.addData("OPENSTATE", "on");
         }
         if (gamepad2.right_trigger > 0.9) {
-            board.clawOpenState = false;
+            robot.closeClaw();
             //telemetry.addData("OPENSTATE", "off");
         }
 
@@ -98,27 +100,20 @@ public class ProductionOpMode extends OpMode {
         //telemetry.addData("right controller", gamepad2.right_trigger);
 
 
-        if (board.clawOpenState) {
-            board.clawOpenerServo.setPosition(board.clawOpenPosition);
-            //telemetry.addData("Claw Action", "Open");
-        }
-        if (!board.clawOpenState){
-            board.clawOpenerServo.setPosition(board.clawClosedPosition);
-            //telemetry.addData("Claw Action", "Close");
-        }
-
         // rotating claw
 
+        // 0.001 is an arbutary number that works
+        // Miracle how this works because of floating point error
+
         if (gamepad2.right_bumper) {
-            board.rotatorPosition = board.rotatorPosition + board.deltaPosition;
+            robot.rotateClaw(0.001,"CW");
             // telemetry.addData("RotatorPosition", rotatorPosition);
             // telemetry.addData("rotator button", "right");
         } else if (gamepad2.left_bumper) {
-            board.rotatorPosition = board.rotatorPosition - board.deltaPosition;
+            robot.rotateClaw(0.001, "CCW");
             //telemetry.addData("RotatorPosition", rotatorPosition);
             // telemetry.addData("RotatorPosition", "left");
         }
 
-        board.clawRotatorServo.setPosition(board.rotatorPosition);
     }
 }

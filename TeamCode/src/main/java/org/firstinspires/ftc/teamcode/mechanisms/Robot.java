@@ -1,85 +1,123 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.components.ProgrammingBoard;
-import org.firstinspires.ftc.teamcode.controlsystem.StateMachine;
 
 /**
  * Class for controlling the overall components of the robot,
  * like the claw, arm, and other things.
  */
 public class Robot {
-    private ProgrammingBoard board;
-    private StateMachine stateMachine;
-    private MecanumDrive driveBase;
+    ProgrammingBoard board = new ProgrammingBoard();
 
-    /*
-     * I also need a heading attribute, which comes from the state machine class
-     * and is updated in the robot.update() function.
-     */
+    private double armPower;
+
+    private double linearExtenderPower;
+
+    private boolean clawOpenState;
+    private double clawClosedPosition;
+    private double clawOpenPosition;
+
+    private double rotatorPosition;
+    private double deltaPosition;
+    private double outer_position;
+
+    private boolean inverseControlState;
+
 
     /**
-     * Constructor for the robot class
-     *
-     * @param externalBoard Takes in an external `ProgrammingBoard`
-     * @param externalMachine Takes in an external `StateMachine`
-     *
+     * The Initalization function for the robot class, which sets up the robot
+     * This must be called before using the class.
      */
-    public Robot(ProgrammingBoard externalBoard, StateMachine externalMachine) {
+    public void init() {
+        /* Wheels */
 
-        // we want to use the external user's stuff, not ours
-        board = externalBoard;
-        stateMachine = externalMachine;
+        // Reverse the right side motors. This may be wrong for your setup.
+        // If your robot moves backwards when commanded to go forwards,
+        // reverse the left side instead.
+        // See the note about this earlier on this page.
+        board.frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        // backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        board.frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        board.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        driveBase = new MecanumDrive(
-                board.frontLeftMotor,
-                board.frontRightMotor,
-                board.backLeftMotor,
-                board.backRightMotor
-        );
+        /* Arm */
+        armPower = 0;
 
+        /* Linear Extender */
+        board.linearExtenderServo.setPower(0);
+        linearExtenderPower = 0;
 
+        /* Claw */
+        // Opener stuff
+        clawOpenState = false;
+        clawClosedPosition = 0.0;
+        clawOpenPosition = 0.9;
+
+        // Rotation stuff
+        rotatorPosition = 0.60; // Set to start in middle position
+
+        outer_position = 0.25;
+
+        board.clawOpenerServo.setPosition(clawClosedPosition);
+
+        //board.clawRotatorServo.setPosition(rotatorPosition);
+
+        //board.clawPlacementServo.setDirection(Servo.Direction.REVERSE);
+
+        /* Driver Control */
+        inverseControlState = false;
     }
-
-    public void initialize() {
-        // Just for setting up the stray variables inside
-    }
-
-    /* For later implementation. for debugging and monitoring purposes
-    public String toString() {
-
-    }
-    */
 
     /**
-     * Throw this into the init_loop section of the robot.
-     *
+     * Where everything in the robot updates every loop
+     * State based things
      */
     public void update() {
-        // the things we're using are external,
-        // so we need to make sure we're updating the things we need.
-
-        // Later Problem
-
+        updateClawPosition();
+        updateClawRotation();
+        updateArmPower();
+        updateLinearExtenderPower();
     }
 
     /**
-     * A function stolen from gm0 when first learning how to use mecanum wheels.
-     * It's been put here for future use, but please don't use this.
-     * Note: This is field centric steering.
-     *
-     * It is much prefered to use the drive methods
-     *
-     * @param leftstick_x put it here
-     * @param leftstick_y put it here
-     * @param rightstick_x put it here
-     * @param strafe_multiplier you can just put it at 1.1
+     * Inverses the controls of the steering.
+     * Is a toggle
      */
-    public void legacyControllerSteer(double leftstick_x, double leftstick_y, double rightstick_x, double strafe_multiplier) {
-        double y = -leftstick_y; // Remember, Y stick value is reversed
-        double x = leftstick_x * strafe_multiplier; // Counteract imperfect strafing
-        double rx = rightstick_x; // Rotation is backwards
+    public void inverseControls() {
+        inverseControlState = !inverseControlState;
+    }
+
+    /**
+     * Getter for current inverse control state
+     * True = Inversed
+     * False = Original direction
+     * @return
+     */
+    public boolean getInversionState() {
+        return inverseControlState;
+    }
+
+    /**
+     * Steers mecanum wheels given the vectors x, y, and rx.
+     * Stolen from GM0
+     * @param x
+     * @param y
+     * @param rx
+     *
+     * TODO Set PID control
+     * TODO Set this up with FTCLib instead of stolen gm0 code
+     * TODO Figure out how to use Roadrunner for auto
+     */
+    public void steer (double x, double y, double rx) {
+
+        if (inverseControlState) {
+            y = y * -1;
+            x = x * -1;
+            //rx = rx * -1;
+        }
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -90,10 +128,93 @@ public class Robot {
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-        // Go around FtcLib and set the power of the actual motor
-        board.frontLeftMotor.motor.setPower(frontLeftPower);
-        board.frontRightMotor.motor.setPower(frontRightPower);
-        board.backLeftMotor.motor.setPower(backLeftPower);
-        board.backRightMotor.motor.setPower(backRightPower);
+        board.frontLeftMotor.setPower(frontLeftPower);
+        board.backLeftMotor.setPower(backLeftPower);
+        board.frontRightMotor.setPower(frontRightPower);
+        board.backRightMotor.setPower(backRightPower);
+    }
+
+    public void setArmPower(double power) {
+        armPower = power;
+    }
+
+    /**
+     * Function to control arm power (temperary)
+     * TODO Set PID on the arm
+     * TODO Use Angle of the arm to control instead of power
+     */
+    private void updateArmPower() {
+        board.armMotor.setPower(armPower);
+    }
+
+    public void setLinearExtenderPower(double power) {
+        linearExtenderPower = power;
+    }
+
+    /**
+     * Function to control linear extender power (temperary)
+     * TODO Set PID on the linear extender
+     * TODO Figure out how to encoder this since we're using a continous servo
+     * TODO Use linear extender in distance extended instead of power.
+     */
+    private void updateLinearExtenderPower() {
+        board.linearExtenderServo.setPower(linearExtenderPower);
+    }
+
+    /**
+     * Sets state of claw to "open"
+     */
+    public void openClaw() {
+        clawOpenState = true;
+    }
+
+    /**
+     * Sets state of claw to "closed"
+     */
+    public void closeClaw() {
+        clawOpenState = false;
+    }
+    private void updateClawPosition() {
+        if (clawOpenState) {
+            board.clawOpenerServo.setPosition(clawOpenPosition);
+            //telemetry.addData("Claw Action", "Open");
+        }
+        if (!clawOpenState){
+            board.clawOpenerServo.setPosition(clawClosedPosition);
+            //telemetry.addData("Claw Action", "Close");
+        }
+    }
+
+    /**
+     * Moves the claw the amount you move it. Positive is moving clockwise
+     *
+     * TODO Make this based on position
+     * TODO Wait for the others to finish the claw on the bot
+     * TODO Add limits on what the rotation can be.
+     *
+     * @param direction Can either be CW or CCW
+     */
+    public void rotateClaw(double deltaPosition, String direction) {
+        switch (direction) {
+            case "CW":
+                rotatorPosition = rotatorPosition + deltaPosition;
+                break;
+            case "CCW":
+                rotatorPosition = rotatorPosition - deltaPosition;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Sets the claw rotation.
+     */
+    public void setClawRotation(double rotationPosition) {
+        rotatorPosition = rotationPosition;
+    }
+
+    private void updateClawRotation() {
+        board.clawRotatorServo.setPosition(rotatorPosition);
     }
 }

@@ -22,22 +22,23 @@ import org.firstinspires.ftc.teamcode.mechanisms.Robot;
 @TeleOp
 @Disabled
 public class basicOpMode extends OpMode {
-    StateMachine stateMachine = new StateMachine();
     ProgrammingBoard board = new ProgrammingBoard();
-    Robot robot = new Robot(board, stateMachine);
+    Robot robot = new Robot();
 
     @Override
     public void init() {
-        board.initialize(hardwareMap);
-        stateMachine.initialize();
-        robot.initialize();
+        board.init(hardwareMap);
+    }
+
+    @Override
+    public void start() {
+        robot.init();
 
     }
 
     @Override
     public void init_loop() {
-        // update state machine stuff here
-        // also multithreading(??) --> future problem.
+        robot.update();
     }
 
 
@@ -47,22 +48,8 @@ public class basicOpMode extends OpMode {
     }
 
     @Override
-    public void start() {
-        /*
-         * Start up the state machine here.
-         * I don't want to put it in init since the match hasn't stated yet...
-         * Also useful when starting and stopping the robot during practice :>
-         */
-
-    }
-
-
-    @Override
     public void stop() {
-        /*
-         * Pause the state machine so it won't noise itself to oblivion.
-         * The bot is stopped, so state needs to stop updating as well
-         */
+        // Something goes here
     }
 
 
