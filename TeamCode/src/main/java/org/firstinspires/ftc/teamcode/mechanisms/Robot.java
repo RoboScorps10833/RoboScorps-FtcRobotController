@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.components.ProgrammingBoard;
  * like the claw, arm, and other things.
  */
 public class Robot {
-    ProgrammingBoard board = new ProgrammingBoard();
+    ProgrammingBoard board;
 
     private double armPower;
 
@@ -25,7 +25,11 @@ public class Robot {
     private double outer_position;
 
     private boolean inverseControlState;
+    private double clawRotaterPower;
 
+    public Robot(ProgrammingBoard programming_board) {
+        this.board = programming_board;
+    }
 
     /**
      * The Initalization function for the robot class, which sets up the robot
@@ -44,31 +48,32 @@ public class Robot {
         board.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /* Arm */
-        armPower = 0;
+        this.armPower = 0;
 
         /* Linear Extender */
         board.linearExtenderServo.setPower(0);
-        linearExtenderPower = 0;
+        this.linearExtenderPower = 0;
 
         /* Claw */
         // Opener stuff
-        clawOpenState = false;
-        clawClosedPosition = 0.0;
-        clawOpenPosition = 0.9;
+        this.clawOpenState = false;
+        this.clawClosedPosition = -0.1;
+        this.clawOpenPosition = 0.6;
 
         // Rotation stuff
-        rotatorPosition = 0.60; // Set to start in middle position
+        this.rotatorPosition = 0.60; // Set to start in middle position
 
-        outer_position = 0.25;
+        this.clawRotaterPower = 0.25;
 
-        board.clawOpenerServo.setPosition(clawClosedPosition);
+        this.outer_position = 0.25;
 
-        //board.clawRotatorServo.setPosition(rotatorPosition);
+
+        //board.clawRotatorServo.setPosition(this.rotatorPosition);
 
         //board.clawPlacementServo.setDirection(Servo.Direction.REVERSE);
 
         /* Driver Control */
-        inverseControlState = false;
+        this.inverseControlState = false;
     }
 
     /**
@@ -76,10 +81,19 @@ public class Robot {
      * State based things
      */
     public void update() {
-        updateClawPosition();
-        updateClawRotation();
-        updateArmPower();
-        updateLinearExtenderPower();
+        //updateClawPosition();
+        if (this.clawOpenState) {
+            board.clawOpenerServo.setPosition(this.clawOpenPosition);
+            //telemetry.addData("Claw Action", "Open");
+        }
+        if (!this.clawOpenState){
+            board.clawOpenerServo.setPosition(this.clawClosedPosition);
+            //telemetry.addData("Claw Action", "Close");
+        }
+
+        //updateClawRotation();
+        //        updateArmPower();
+//        updateLinearExtenderPower();
     }
 
     /**
@@ -87,7 +101,7 @@ public class Robot {
      * Is a toggle
      */
     public void inverseControls() {
-        inverseControlState = !inverseControlState;
+        this.inverseControlState = !this.inverseControlState;
     }
 
     /**
@@ -97,7 +111,7 @@ public class Robot {
      * @return
      */
     public boolean getInversionState() {
-        return inverseControlState;
+        return this.inverseControlState;
     }
 
     /**
@@ -113,7 +127,7 @@ public class Robot {
      */
     public void steer (double x, double y, double rx) {
 
-        if (inverseControlState) {
+        if (this.inverseControlState) {
             y = y * -1;
             x = x * -1;
             //rx = rx * -1;
@@ -135,7 +149,8 @@ public class Robot {
     }
 
     public void setArmPower(double power) {
-        armPower = power;
+        this.armPower = power;
+        board.armMotor.setPower(this.armPower);
     }
 
     /**
@@ -143,12 +158,17 @@ public class Robot {
      * TODO Set PID on the arm
      * TODO Use Angle of the arm to control instead of power
      */
-    private void updateArmPower() {
-        board.armMotor.setPower(armPower);
-    }
+//    private void updateArmPower() {
+//        board.armMotor.setPower(this.armPower);
+//    }
 
     public void setLinearExtenderPower(double power) {
-        linearExtenderPower = power;
+        this.linearExtenderPower = power;
+        board.linearExtenderServo.setPower(this.linearExtenderPower);
+    }
+
+    public void setClawPower(double power) {
+        board.clawRotatorServo.setPower(power);
     }
 
     /**
@@ -157,36 +177,41 @@ public class Robot {
      * TODO Figure out how to encoder this since we're using a continous servo
      * TODO Use linear extender in distance extended instead of power.
      */
-    private void updateLinearExtenderPower() {
-        board.linearExtenderServo.setPower(linearExtenderPower);
-    }
+//    private void updateLinearExtenderPower() {
+//        board.linearExtenderServo.setPower(this.linearExtenderPower);
+//    }
 
     /**
      * Sets state of claw to "open"
      */
     public void openClaw() {
-        clawOpenState = true;
+        this.clawOpenState = true;
+        updateClawPosition();
     }
 
     /**
      * Sets state of claw to "closed"
      */
     public void closeClaw() {
-        clawOpenState = false;
+        this.clawOpenState = false;
+        updateClawPosition();
     }
+
+
     private void updateClawPosition() {
-        if (clawOpenState) {
-            board.clawOpenerServo.setPosition(clawOpenPosition);
+        if (this.clawOpenState) {
+            board.clawOpenerServo.setPosition(this.clawOpenPosition);
             //telemetry.addData("Claw Action", "Open");
         }
-        if (!clawOpenState){
-            board.clawOpenerServo.setPosition(clawClosedPosition);
+        if (!this.clawOpenState){
+            board.clawOpenerServo.setPosition(this.clawClosedPosition);
             //telemetry.addData("Claw Action", "Close");
         }
     }
 
+
     /**
-     * Moves the claw the amount you move it. Positive is moving clockwise
+     * Opens and closes the the claw the amount you move it. Positive is moving clockwise
      *
      * TODO Make this based on position
      * TODO Wait for the others to finish the claw on the bot
@@ -194,27 +219,57 @@ public class Robot {
      *
      * @param direction Can either be CW or CCW
      */
-    public void rotateClaw(double deltaPosition, String direction) {
+    public void openClawRotation(String direction) {
         switch (direction) {
             case "CW":
-                rotatorPosition = rotatorPosition + deltaPosition;
+                // this.rotatorPosition = this.rotatorPosition + deltaPosition;
+                // board.clawRotatorServo.setPosition(this.rotatorPosition);
+                board.clawRotatorServo.setPower(2*this.clawRotaterPower);
                 break;
             case "CCW":
-                rotatorPosition = rotatorPosition - deltaPosition;
+                // this.rotatorPosition = this.rotatorPosition - deltaPosition;
+                //board.clawRotatorServo.setPosition(this.rotatorPosition);
+                board.clawRotatorServo.setPower(-this.clawRotaterPower);
                 break;
             default:
+                // board.clawRotatorServo.setPosition(this.rotatorPosition);
+                board.clawRotatorServo.setPower(0);
                 break;
         }
     }
 
     /**
+     * Do the same above, but with position
+     *
+     * TODO Make this based on position
+     * TODO Wait for the others to finish the claw on the bot
+     * TODO Add limits on what the rotation can be.
+     *
+     * @param direction Can either be CW or CCW
+     *//*
+    public void rotateClawPosition(double deltaPosition, String direction) {
+        switch (direction) {
+            case "CW":
+                this.rotatorPosition = this.rotatorPosition + deltaPosition;
+                board.clawRotatorServo.setPosition(this.rotatorPosition);
+                break;
+            case "CCW":
+                this.rotatorPosition = this.rotatorPosition - deltaPosition;
+                board.clawRotatorServo.setPosition(this.rotatorPosition);
+                break;
+            default:
+                board.clawRotatorServo.setPosition(this.rotatorPosition);
+                break;
+        }
+    }*/
+    /**
      * Sets the claw rotation.
      */
     public void setClawRotation(double rotationPosition) {
-        rotatorPosition = rotationPosition;
+        this.rotatorPosition = rotationPosition;
     }
 
-    private void updateClawRotation() {
-        board.clawRotatorServo.setPosition(rotatorPosition);
-    }
+    //private void updateClawRotation() {
+    //    board.clawRotatorServo.setPosition(this.rotatorPosition);
+    //}
 }

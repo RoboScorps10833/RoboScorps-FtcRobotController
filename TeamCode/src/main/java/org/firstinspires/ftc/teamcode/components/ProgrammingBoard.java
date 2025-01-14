@@ -27,7 +27,7 @@ public class ProgrammingBoard {
 
     public CRServo linearExtenderServo;
 
-    public Servo clawRotatorServo;
+    public CRServo clawRotatorServo;
     public Servo clawOpenerServo;
 
     //public Servo clawPlacementServo;
@@ -50,7 +50,7 @@ public class ProgrammingBoard {
         linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
 
         clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
-        clawRotatorServo = hardwareMap.get(Servo.class, "ClawPlacementServo");
+        clawRotatorServo = hardwareMap.get(CRServo.class, "ClawRotatorServo");
         //clawPlacementServo = hardwareMap.get(Servo.class,"ClawPlacementServo");
 
     }

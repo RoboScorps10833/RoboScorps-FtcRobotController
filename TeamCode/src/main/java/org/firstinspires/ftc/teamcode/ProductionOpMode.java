@@ -12,10 +12,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.components.ProgrammingBoard;
 import org.firstinspires.ftc.teamcode.mechanisms.Robot;
@@ -26,7 +22,9 @@ import org.firstinspires.ftc.teamcode.mechanisms.Robot;
 @TeleOp
 public class ProductionOpMode extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
-    Robot robot = new Robot();
+    Robot robot = new Robot(board);
+
+    double rotator_power = 0.005;
 
     @Override
     public void init() {
@@ -105,14 +103,16 @@ public class ProductionOpMode extends OpMode {
         // 0.001 is an arbutary number that works
         // Miracle how this works because of floating point error
 
-        if (gamepad2.right_bumper) {
-            robot.rotateClaw(0.001,"CW");
-            // telemetry.addData("RotatorPosition", rotatorPosition);
-            // telemetry.addData("rotator button", "right");
-        } else if (gamepad2.left_bumper) {
-            robot.rotateClaw(0.001, "CCW");
-            //telemetry.addData("RotatorPosition", rotatorPosition);
-            // telemetry.addData("RotatorPosition", "left");
+
+        if (gamepad1.right_bumper) {
+            robot.setClawPower(-0.25);
+            //telemetry.addData("Thing", "Right pressed");
+        } else if (gamepad1.left_bumper) {
+            robot.setClawPower(0.25);
+           // telemetry.addData("Thing", "Left pressed");
+        } else {
+            robot.setClawPower(0);
+          //  telemetry.addData("Thing", "Nothing");
         }
 
     }

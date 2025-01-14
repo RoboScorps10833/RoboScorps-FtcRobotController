@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.Robot;
 @Disabled
 public class basicOpMode extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
-    Robot robot = new Robot();
+    Robot robot = new Robot(board);
 
     @Override
     public void init() {
