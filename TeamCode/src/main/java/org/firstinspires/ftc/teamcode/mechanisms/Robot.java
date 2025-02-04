@@ -27,6 +27,8 @@ public class Robot {
     private boolean inverseControlState;
     private double clawRotaterPower;
 
+    private int armPosition;
+
     public Robot(ProgrammingBoard programming_board) {
         this.board = programming_board;
     }
@@ -48,7 +50,10 @@ public class Robot {
         board.backLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         /* Arm */
-        this.armPower = 0;
+        this.armPower = 0.5;
+        this.armPosition = board.armMotor.getCurrentPosition();
+        board.armMotor.setPower(this.armPower);
+        board.armMotor.setTargetPosition(armPosition);
 
         /* Linear Extender */
         board.linearExtenderServo.setPower(0);
@@ -151,6 +156,13 @@ public class Robot {
     public void setArmPower(double power) {
         this.armPower = power;
         board.armMotor.setPower(this.armPower);
+    }
+
+    public void changeArmPosition(int change) {
+        this.armPosition = this.armPosition + change;
+        board.armMotor.setTargetPosition(this.armPosition);
+
+
     }
 
     /**
@@ -272,4 +284,5 @@ public class Robot {
     //private void updateClawRotation() {
     //    board.clawRotatorServo.setPosition(this.rotatorPosition);
     //}
+
 }

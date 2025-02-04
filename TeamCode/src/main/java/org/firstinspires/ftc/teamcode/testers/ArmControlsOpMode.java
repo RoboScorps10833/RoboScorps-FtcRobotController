@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
-@Disabled
+//@Disabled
 public class ArmControlsOpMode extends OpMode {
     DcMotor armMotor;
     // Arbitrary multiplyer to make the thing bigger.
@@ -19,6 +19,7 @@ public class ArmControlsOpMode extends OpMode {
     @Override
     public void init() {
         armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // Not sure if we need to reverse direction
         //armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }

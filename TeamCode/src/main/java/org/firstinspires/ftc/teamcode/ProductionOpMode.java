@@ -24,7 +24,6 @@ public class ProductionOpMode extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
     Robot robot = new Robot(board);
 
-    double rotator_power = 0.005;
 
     @Override
     public void init() {
@@ -64,19 +63,21 @@ public class ProductionOpMode extends OpMode {
 
         //0.5 is just a power value that works temperalrily
         if (gamepad2.x) { // going up
-            robot.setArmPower(0.5);
+            robot.changeArmPosition(5);
+            //robot.setArmPower(0.5);
         } if (gamepad2.y) { // going down
-            robot.setArmPower(-0.5);
+            robot.changeArmPosition(-5);
+            //robot.setArmPower(-0.5);
         } else {
-            robot.setArmPower(0);
+            //robot.setArmPower(0);
         }
 
         // Linear Extender
 
         //0.5 is a power value that works so far
-        if (gamepad2.b) {
+        if (gamepad2.a) {
             robot.setLinearExtenderPower(-0.5);
-        } else if (gamepad2.a) {
+        } else if (gamepad2.b) {
             robot.setLinearExtenderPower(0.5);
         } else {
             robot.setLinearExtenderPower(0);
@@ -104,10 +105,10 @@ public class ProductionOpMode extends OpMode {
         // Miracle how this works because of floating point error
 
 
-        if (gamepad1.right_bumper) {
+        if (gamepad2.right_bumper) {
             robot.setClawPower(-0.25);
             //telemetry.addData("Thing", "Right pressed");
-        } else if (gamepad1.left_bumper) {
+        } else if (gamepad2.left_bumper) {
             robot.setClawPower(0.25);
            // telemetry.addData("Thing", "Left pressed");
         } else {

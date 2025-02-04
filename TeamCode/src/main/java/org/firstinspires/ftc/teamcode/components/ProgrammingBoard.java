@@ -47,6 +47,10 @@ public class ProgrammingBoard {
 
         armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
 
+        armMotor.setTargetPosition(armMotor.getCurrentPosition());
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); // Don't kill your ears
+
         linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
 
         clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
