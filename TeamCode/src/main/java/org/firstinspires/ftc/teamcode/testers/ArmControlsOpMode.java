@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
-//@Disabled
+@Disabled
 public class ArmControlsOpMode extends OpMode {
     DcMotor armMotor;
     // Arbitrary multiplyer to make the thing bigger.
