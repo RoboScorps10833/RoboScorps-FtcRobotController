@@ -63,10 +63,10 @@ public class ProductionOpMode extends OpMode {
 
         //0.5 is just a power value that works temperalrily
         if (gamepad2.x) { // going up
-            robot.changeArmPosition(5);
+            robot.changeArmPosition(1);
             //robot.setArmPower(0.5);
         } if (gamepad2.y) { // going down
-            robot.changeArmPosition(-5);
+            robot.changeArmPosition(-1);
             //robot.setArmPower(-0.5);
         } else {
             //robot.setArmPower(0);
@@ -76,9 +76,9 @@ public class ProductionOpMode extends OpMode {
 
         //0.5 is a power value that works so far
         if (gamepad2.a) {
-            robot.setLinearExtenderPower(-0.5);
+            robot.setLinearExtenderPower(-0.90);
         } else if (gamepad2.b) {
-            robot.setLinearExtenderPower(0.5);
+            robot.setLinearExtenderPower(0.90);
         } else {
             robot.setLinearExtenderPower(0);
         }

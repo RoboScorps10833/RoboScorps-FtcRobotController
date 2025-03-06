@@ -78,7 +78,7 @@ public class Robot {
         //board.clawPlacementServo.setDirection(Servo.Direction.REVERSE);
 
         /* Driver Control */
-        this.inverseControlState = false;
+        this.inverseControlState = true;
     }
 
     /**
@@ -160,6 +160,9 @@ public class Robot {
 
     public void changeArmPosition(int change) {
         this.armPosition = this.armPosition + change;
+
+       // if (this.armPosition < -800) { this.armPosition = -800; }
+
         board.armMotor.setTargetPosition(this.armPosition);
 
 

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
-@Disabled
+//@Disabled
 public class ArmEncoderControl extends OpMode {
     DcMotor armMotor;
     int position;
@@ -35,6 +35,9 @@ public class ArmEncoderControl extends OpMode {
         } else {
            // armMotor.setPower(0);
         }
+
+        if (position < -800) { position = -800; }
+
         armMotor.setTargetPosition(position);
         telemetry.addData("Current Position", position);
         telemetry.addData("Moving?", armMotor.isBusy());

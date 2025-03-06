@@ -25,7 +25,7 @@ public class ProgrammingBoard {
 
     public DcMotor armMotor;
 
-    public CRServo linearExtenderServo;
+    public DcMotor linearExtenderServo;
 
     public CRServo clawRotatorServo;
     public Servo clawOpenerServo;
@@ -51,7 +51,7 @@ public class ProgrammingBoard {
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         //armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE); // Don't kill your ears
 
-        linearExtenderServo = hardwareMap.get(CRServo.class, "LinearExtenderServo");
+        linearExtenderServo = hardwareMap.get(DcMotor.class, "LinearExtenderMotor");
 
         clawOpenerServo = hardwareMap.get(Servo.class, "ClawOpenerServo");
         clawRotatorServo = hardwareMap.get(CRServo.class, "ClawRotatorServo");
