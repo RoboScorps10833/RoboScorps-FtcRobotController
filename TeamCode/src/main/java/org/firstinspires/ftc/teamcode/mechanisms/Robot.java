@@ -62,14 +62,12 @@ public class Robot {
         /* Claw */
         // Opener stuff
         this.clawOpenState = false;
-        this.clawClosedPosition = -0.1;
-        this.clawOpenPosition = 0.6;
+        this.clawClosedPosition = 3;
+        this.clawOpenPosition = 0.8;
 
         // Rotation stuff
         this.rotatorPosition = 0.60; // Set to start in middle position
-
-        this.clawRotaterPower = 0.25;
-
+        this.clawRotaterPower = 0.5;
         this.outer_position = 0.25;
 
 
