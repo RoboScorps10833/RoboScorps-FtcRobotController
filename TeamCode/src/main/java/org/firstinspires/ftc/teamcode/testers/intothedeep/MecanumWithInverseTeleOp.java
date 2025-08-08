@@ -9,15 +9,14 @@
  * 
  */
 
-package org.firstinspires.ftc.teamcode.testers;
+package org.firstinspires.ftc.teamcode.testers.intothedeep;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp
+@TeleOp(name="Base Driver Opmode", group="Drivebase")
 //@Disabled
 public class MecanumWithInverseTeleOp extends LinearOpMode {
     @Override

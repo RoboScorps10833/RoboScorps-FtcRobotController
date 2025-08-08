@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode.testers;
+package org.firstinspires.ftc.teamcode.testers.intothedeep;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp
+@TeleOp(name="Claw Rotation Control Tester", group="Claw")
 @Disabled
 public class ClawServoRotatorOpMode extends OpMode {
     CRServo clawRotatorServo;

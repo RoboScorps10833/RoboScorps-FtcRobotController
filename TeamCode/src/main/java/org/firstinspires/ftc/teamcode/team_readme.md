@@ -4,13 +4,17 @@ Welcome to the RoboScorps' repo :>
 
 The repo is organizised as such:
 - Testers - Where small and short opmodes made to test a purpose lie when they're unneeded
-- Components - Where our programming board is
-- Control system - Where all the math related to state and auto are
-- mechanisms - where all the functions to move the robot belong.
+- Mechanisms - where all the overhead to move the robot belong.
+- Messages - Logs from Roadrunner
+- Teleop - This season's teleop stuff
+- Autos - This season's autos are
+- Tuning - Roadrunner scripts.
 
-Nothing should be in the global teamCode unless you want to use it in competition.
-Also, when you aren't using an opmode, make sure to disable it.
-
+Also for group names:
+- Drivebase
+- Claw
+- Lift
+Etc... :)
 
 ## TODO
 Honesty, it doesn't matter how scuffed the thing is, as long as it works,

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.controlsystem;
+package org.firstinspires.ftc.teamcode.mechanisms;
 
 /*
  * TODO:
@@ -6,8 +6,6 @@ package org.firstinspires.ftc.teamcode.controlsystem;
  *  - Figure out how to do state stuff with roadrunner (or maybe FtcLib)
  */
 
-
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * The state machine for the robot that computes all the values necessary for the

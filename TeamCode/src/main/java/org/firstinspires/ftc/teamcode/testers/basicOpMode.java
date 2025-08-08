@@ -9,17 +9,16 @@
  * Note: the disabled annotation means it won't show up in the OpMode menu.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testers;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.components.ProgrammingBoard;
-import org.firstinspires.ftc.teamcode.controlsystem.StateMachine;
+import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 import org.firstinspires.ftc.teamcode.mechanisms.Robot;
 
-@TeleOp
+@TeleOp(name="Dummy OpMode", group="Dummy")
 @Disabled
 public class basicOpMode extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();

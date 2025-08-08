@@ -5,14 +5,14 @@
  * The up on the D pad is moving it up and down on the d pad makes it go down.
  */
 
-package org.firstinspires.ftc.teamcode.testers;
+package org.firstinspires.ftc.teamcode.testers.intothedeep;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp
+@TeleOp(name="Linear Extender", group="Extender")
 @Disabled
 public class LinearExtenderTeleOpMode extends OpMode {
     Servo linearExtenderServo;

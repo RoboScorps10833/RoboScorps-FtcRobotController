@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.testers;
+package org.firstinspires.ftc.teamcode.testers.intothedeep;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp
-//@Disabled
+@TeleOp(name="Arm Encoder Tester", group="Arm")
+@Disabled
 public class ArmEncoderControl extends OpMode {
     DcMotor armMotor;
     int position;
