@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.roadrunner.tuning;
+package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.NonNull;
 
@@ -38,20 +38,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
-import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-import org.firstinspires.ftc.teamcode.OTOSLocalizer;
-import org.firstinspires.ftc.teamcode.PinpointLocalizer;
-import org.firstinspires.ftc.teamcode.TankDrive;
-import org.firstinspires.ftc.teamcode.ThreeDeadWheelLocalizer;
-import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public final class TuningOpModes {
-    // TODO: change this to TankDrive.class if you're using tank
+    // DON"T: change this to TankDrive.class if you're using tank
     public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
 
     public static final String GROUP = "quickstart";
@@ -101,11 +94,23 @@ public final class TuningOpModes {
             }
 
             @Override
+            public DcMotorSimple.Direction getParDirection() {
+                return parDirection == GoBildaPinpointDriver.EncoderDirection.FORWARD ?
+                        DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE;
+            }
+
+            @Override
             public void setPerpDirection(@NonNull DcMotorSimple.Direction direction) {
                 perpDirection = direction == DcMotorSimple.Direction.FORWARD ?
                         GoBildaPinpointDriver.EncoderDirection.FORWARD :
                         GoBildaPinpointDriver.EncoderDirection.REVERSED;
                 pl.driver.setEncoderDirections(parDirection, perpDirection);
+            }
+
+            @Override
+            public DcMotorSimple.Direction getPerpDirection() {
+                return perpDirection == GoBildaPinpointDriver.EncoderDirection.FORWARD ?
+                        DcMotorSimple.Direction.FORWARD : DcMotorSimple.Direction.REVERSE;
             }
         };
     }
@@ -156,11 +161,6 @@ public final class TuningOpModes {
                     parEncs.add(new EncoderRef(0, 0));
                     perpEncs.add(new EncoderRef(0, 1));
                     lazyImu = new OTOSIMU(ol.otos);
-
-                    manager.register(metaForClass(OTOSAngularScalarTuner.class), new OTOSAngularScalarTuner(ol.otos));
-                    manager.register(metaForClass(OTOSLinearScalarTuner.class), new OTOSLinearScalarTuner(ol.otos));
-                    manager.register(metaForClass(OTOSHeadingOffsetTuner.class), new OTOSHeadingOffsetTuner(ol.otos));
-                    manager.register(metaForClass(OTOSPositionOffsetTuner.class), new OTOSPositionOffsetTuner(ol.otos));
                 }  else if (md.localizer instanceof PinpointLocalizer) {
                     PinpointView pv = makePinpointView((PinpointLocalizer) md.localizer);
                     encoderGroups.add(new PinpointEncoderGroup(pv));
@@ -250,11 +250,6 @@ public final class TuningOpModes {
                     parEncs.add(new EncoderRef(0, 0));
                     perpEncs.add(new EncoderRef(0, 1));
                     lazyImu = new OTOSIMU(ol.otos);
-
-                    manager.register(metaForClass(OTOSAngularScalarTuner.class), new OTOSAngularScalarTuner(ol.otos));
-                    manager.register(metaForClass(OTOSLinearScalarTuner.class), new OTOSLinearScalarTuner(ol.otos));
-                    manager.register(metaForClass(OTOSHeadingOffsetTuner.class), new OTOSHeadingOffsetTuner(ol.otos));
-                    manager.register(metaForClass(OTOSPositionOffsetTuner.class), new OTOSPositionOffsetTuner(ol.otos));
                 } else {
                     throw new RuntimeException("unknown localizer: " + td.localizer.getClass().getName());
                 }
@@ -296,6 +291,11 @@ public final class TuningOpModes {
         manager.register(metaForClass(ManualFeedbackTuner.class), ManualFeedbackTuner.class);
         manager.register(metaForClass(SplineTest.class), SplineTest.class);
         manager.register(metaForClass(LocalizationTest.class), LocalizationTest.class);
+
+        manager.register(metaForClass(OTOSAngularScalarTuner.class), new OTOSAngularScalarTuner(dvf));
+        manager.register(metaForClass(OTOSLinearScalarTuner.class), new OTOSLinearScalarTuner(dvf));
+        manager.register(metaForClass(OTOSHeadingOffsetTuner.class), new OTOSHeadingOffsetTuner(dvf));
+        manager.register(metaForClass(OTOSPositionOffsetTuner.class), new OTOSPositionOffsetTuner(dvf));
 
         FtcDashboard.getInstance().withConfigRoot(configRoot -> {
             for (Class<?> c : Arrays.asList(
