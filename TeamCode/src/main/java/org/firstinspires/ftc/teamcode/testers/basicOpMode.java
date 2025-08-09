@@ -15,8 +15,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
-import org.firstinspires.ftc.teamcode.mechanisms.Robot;
+import org.firstinspires.ftc.teamcode.testers.intothedeep.production.ProgrammingBoard;
+import org.firstinspires.ftc.teamcode.testers.intothedeep.production.Robot;
 
 @TeleOp(name="Dummy OpMode", group="Dummy")
 @Disabled

@@ -8,13 +8,10 @@
  * 
  */
 
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.testers.intothedeep.production;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
-import org.firstinspires.ftc.teamcode.mechanisms.Robot;
 
 /**
  * The Production OpMode for the robot
