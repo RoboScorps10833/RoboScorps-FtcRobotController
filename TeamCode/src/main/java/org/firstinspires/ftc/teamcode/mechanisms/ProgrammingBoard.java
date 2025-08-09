@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -33,7 +34,8 @@ public class ProgrammingBoard {
     }
 
     // TODO: Bulk reading method with Lynx Module
-    // TODO: Add FTCLib for feedforward and pid controllers
+    // DONE: Add FTCLib for feedforward and pid controllers
     // TODO: Get LED bling >:)
+    // TODO: Tune the motor's pidf...
 
 }
