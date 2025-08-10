@@ -1,17 +1,16 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 /**
- * Class that implements the bot's mechanisms and abstracts it away.
- * Also acts as an interface to the mechanism's actions for Roadrunner.
+ * Class that implements the bot's Teleop driving and abstracts it away.
  */
-public class Robot {
+public class Drivebase {
     // Call if you need hardware
     ProgrammingBoard board;
 
     // Variables go here so you can call them inside methods
     private boolean controlsInversed;
 
-    public Robot(ProgrammingBoard board) {
+    public Drivebase(ProgrammingBoard board) {
         this.board = board;
     }
 
@@ -68,8 +67,7 @@ public class Robot {
         this.controlsInversed = !this.controlsInversed;
     }
 
-    // Components should be subclasses of this class Robot to use the board
-    // Actions should not be of the class that they implement, but of the robot class
 
-    // TODO: Create Classes for the individual Mecnhanisms
 }
+
+// TODO: Create Classes for the individual Mecnhanisms (in own files)

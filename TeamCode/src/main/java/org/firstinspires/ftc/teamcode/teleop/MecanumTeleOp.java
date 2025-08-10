@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
-import org.firstinspires.ftc.teamcode.mechanisms.Robot;
+import org.firstinspires.ftc.teamcode.mechanisms.Drivebase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class MecanumTeleOp extends OpMode {
      */
 
     private ProgrammingBoard board = new ProgrammingBoard();
-    private Robot bot = new Robot(board);
+    private Drivebase drivebase = new Drivebase(board);
 
     // Roadrunner
     private FtcDashboard dash = FtcDashboard.getInstance();
@@ -46,10 +45,10 @@ public class MecanumTeleOp extends OpMode {
         double theta = gamepad1.right_stick_x;
 
         if (gamepad1.dpad_down) {
-            bot.inverseControls();
+            drivebase.inverseControls();
         }
 
-        bot.steer(x,y,theta);
+        drivebase.steer(x,y,theta);
 
         /*
          * Run roadrunner actions (basically a single loop runBlocking())
