@@ -19,18 +19,23 @@ public class ProgrammingBoard {
 
     // Help with the motors
     // https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/hardware/DcMotorEx.html
-    DcMotorEx frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
+    public DcMotorEx frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
+    public DcMotorEx leftFlywheelMotor, rightFlywheelMotor, intakeMotor;
 
     public void init(HardwareMap hardwareMap) {
         // -------------- Drivebase -------------- //
-        frontLeftMotor = hardwareMap.get(DcMotorEx.class, "leftFront");
+        frontLeftMotor = hardwareMap.get(DcMotorEx.class, "FrontLeftMotor");
         //frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        frontRightMotor = hardwareMap.get(DcMotorEx.class, "rightFront");
+        frontRightMotor = hardwareMap.get(DcMotorEx.class, "FrontRightMotor");
         //frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        backLeftMotor = hardwareMap.get(DcMotorEx.class, "leftBack");
+        backLeftMotor = hardwareMap.get(DcMotorEx.class, "BackLeftMotor");
         //backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        backRightMotor = hardwareMap.get(DcMotorEx.class, "rightBack");
+        backRightMotor = hardwareMap.get(DcMotorEx.class, "BackRightMotor");
         backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftFlywheelMotor = hardwareMap.get(DcMotorEx.class, "LeftFlywheelMotor");
+        rightFlywheelMotor = hardwareMap.get(DcMotorEx.class, "RightFlywheelMotor");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "IntakeMotor");
     }
 
     // TODO: Bulk reading method with Lynx Module

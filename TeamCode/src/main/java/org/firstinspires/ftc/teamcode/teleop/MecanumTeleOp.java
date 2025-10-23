@@ -65,6 +65,13 @@ public class MecanumTeleOp extends OpMode {
         }
         runningActions = newActions;
 
+        // Temperary, just for testing!
+        if (gamepad1.a) {
+            board.intakeMotor.setPower(0.3);
+        } else {
+            board.intakeMotor.setPower(0);
+        }
+
         dash.sendTelemetryPacket(packet);
     }
 }
