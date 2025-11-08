@@ -1,6 +1,11 @@
 repositories {
     mavenCentral()
     google() // Needed for androidx
+
+    // For Panels
+    maven {
+        url = "https://mymaven.bylazar.com/releases"
+    }
 }
 
 dependencies {
@@ -14,6 +19,10 @@ dependencies {
     implementation 'org.firstinspires.ftc:Vision:10.3.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
+
+    implementation 'com.pedropathing:ftc:2.0.4' // Pedropathing
+    implementation 'com.pedropathing:telemetry:1.0.0'
+    implementation 'com.bylazar:fullpanels:1.0.6' // Panels
 }
 
 // Isn't working, but I need it since soemthing I use uses OpenRC
@@ -23,3 +32,5 @@ dependencies {
 //implementation('com.acmerobotics.dashboard:dashboard:0.4.16') {
 //    exclude group: 'org.firstinspires.ftc'
 //}
+
+// Panels
