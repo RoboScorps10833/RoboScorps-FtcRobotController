@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -25,9 +23,6 @@ public class MecanumTeleOp extends OpMode {
     private ProgrammingBoard board = new ProgrammingBoard();
     private Drivebase drivebase = new Drivebase(board);
 
-    // Roadrunner
-    private FtcDashboard dash = FtcDashboard.getInstance();
-    private List<Action> runningActions = new ArrayList<>(); // Queue for roadrunner actions
 
     @Override
     public void init() {
@@ -36,9 +31,8 @@ public class MecanumTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        TelemetryPacket packet = new TelemetryPacket();
 
-        // TODO: Add field view of robot with FTCDashboard
+        // TODO: Add field view of robot with Panels
 
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y;
@@ -50,20 +44,6 @@ public class MecanumTeleOp extends OpMode {
 
         drivebase.steer(x,y,theta);
 
-        /*
-         * Run roadrunner actions (basically a single loop runBlocking())
-         * Queue by using `runningActions.add(...)
-         *
-         * See https://rr.brott.dev/docs/v1-0/guides/teleop-actions/ for details
-         */
-        List<Action> newActions = new ArrayList<>();
-        for (Action action : runningActions) {
-            action.preview(packet.fieldOverlay());
-            if (action.run(packet)) {
-                newActions.add(action);
-            }
-        }
-        runningActions = newActions;
 
         // Temperary, just for testing!
         if (gamepad1.a) {
@@ -72,6 +52,5 @@ public class MecanumTeleOp extends OpMode {
             board.intakeMotor.setPower(0);
         }
 
-        dash.sendTelemetryPacket(packet);
     }
 }

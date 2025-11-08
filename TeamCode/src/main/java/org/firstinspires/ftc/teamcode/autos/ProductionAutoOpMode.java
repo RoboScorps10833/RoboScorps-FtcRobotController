@@ -1,21 +1,14 @@
 package org.firstinspires.ftc.teamcode.autos;
 
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 
 @Autonomous(name="Production Auto", group="Production", preselectTeleOp = "MecanumTeleOp")
-@Config
 public class ProductionAutoOpMode extends OpMode {
 
-    // Provided by Roadrunner
-    Pose2d initialPose;
-    MecanumDrive drive;
+
 
     // Custom Made Components
     ProgrammingBoard board;
@@ -23,8 +16,7 @@ public class ProductionAutoOpMode extends OpMode {
 
     @Override
     public void init() {
-        initialPose = new Pose2d(0,0,Math.toRadians(0));
-        drive = new MecanumDrive(hardwareMap, initialPose);
+
 
         board = new ProgrammingBoard();
         board.init(hardwareMap);
