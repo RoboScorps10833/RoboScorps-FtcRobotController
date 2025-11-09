@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.hardware.motors.Motor;
+import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
+import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
 
 /**
  * A class that abstracts away hardware mapping and setting making.
@@ -19,7 +22,9 @@ public class ProgrammingBoard {
     // Help with the motors
     // https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/hardware/DcMotorEx.html
     public DcMotorEx frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
-    public DcMotorEx leftFlywheelMotor, rightFlywheelMotor, intakeMotor;
+    public DcMotorEx intakeMotor;
+
+    public MotorGroup FlywheelMotors;
 
     public void init(HardwareMap hardwareMap) {
         // -------------- Drivebase -------------- //
@@ -31,10 +36,18 @@ public class ProgrammingBoard {
         //backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backRightMotor = hardwareMap.get(DcMotorEx.class, "BackRightMotor");
         backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
-
-        leftFlywheelMotor = hardwareMap.get(DcMotorEx.class, "LeftFlywheelMotor");
-        rightFlywheelMotor = hardwareMap.get(DcMotorEx.class, "RightFlywheelMotor");
         intakeMotor = hardwareMap.get(DcMotorEx.class, "IntakeMotor");
+
+        FlywheelMotors = new MotorGroup(
+                new MotorEx(hardwareMap, "LeftFlywheelMotor"),
+                new MotorEx(hardwareMap, "RightFlywheelMotor")
+        );
+        FlywheelMotors.setRunMode(Motor.RunMode.VelocityControl);
+        FlywheelMotors.setVeloCoefficients(0,0,0);
+        FlywheelMotors.setFeedforwardCoefficients(0,0,0);
+
+
+
     }
 
     // TODO: Bulk reading method with Lynx Module

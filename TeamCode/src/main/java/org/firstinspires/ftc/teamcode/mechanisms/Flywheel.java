@@ -13,13 +13,17 @@ public class Flywheel {
      * Turns on the Flywheel
      */
     public void spinUp() {
-
+        board.FlywheelMotors.set(1);
     }
 
     /**
      * Turns off the flywheel
      */
     public void spinDown() {
+        board.FlywheelMotors.set(0);
+    }
 
+    public void calculateFlywheelSpeeds() {
+        // For future use if need be.
     }
 }
