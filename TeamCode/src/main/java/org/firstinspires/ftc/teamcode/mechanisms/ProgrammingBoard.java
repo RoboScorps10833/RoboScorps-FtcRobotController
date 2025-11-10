@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
+import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 /**
  * A class that abstracts away hardware mapping and setting making.
@@ -22,7 +22,10 @@ public class ProgrammingBoard {
     // Help with the motors
     // https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/hardware/DcMotorEx.html
     public DcMotorEx frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
-    public DcMotorEx intakeMotor;
+
+    public MotorEx intakeMotorInner, intakeMotorOuter;
+    public MotorGroup intakeMotors;
+    public ServoEx gateServo;
 
     public MotorGroup FlywheelMotors;
 
@@ -36,8 +39,18 @@ public class ProgrammingBoard {
         //backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backRightMotor = hardwareMap.get(DcMotorEx.class, "BackRightMotor");
         backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "IntakeMotor");
 
+        // Intake
+        intakeMotorInner = new MotorEx(hardwareMap, "IntakeMotorInner");
+        intakeMotorOuter = new MotorEx(hardwareMap, "IntakeMotorOuter");
+
+        intakeMotors = new MotorGroup(intakeMotorInner, intakeMotorOuter);
+        intakeMotors.setRunMode(Motor.RunMode.RawPower);
+
+        gateServo = new ServoEx(hardwareMap, "GateServo",0 , 100);
+        gateServo.setInverted(false);
+
+        // Outtake
         FlywheelMotors = new MotorGroup(
                 new MotorEx(hardwareMap, "LeftFlywheelMotor"),
                 new MotorEx(hardwareMap, "RightFlywheelMotor")
@@ -45,7 +58,6 @@ public class ProgrammingBoard {
         FlywheelMotors.setRunMode(Motor.RunMode.VelocityControl);
         FlywheelMotors.setVeloCoefficients(0,0,0);
         FlywheelMotors.setFeedforwardCoefficients(0,0,0);
-
 
 
     }

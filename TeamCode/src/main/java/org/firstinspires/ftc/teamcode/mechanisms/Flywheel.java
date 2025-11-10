@@ -25,5 +25,7 @@ public class Flywheel {
 
     public void calculateFlywheelSpeeds() {
         // For future use if need be.
+
+        // TODO: Do tests to generate linear regression curve for shooter
     }
 }

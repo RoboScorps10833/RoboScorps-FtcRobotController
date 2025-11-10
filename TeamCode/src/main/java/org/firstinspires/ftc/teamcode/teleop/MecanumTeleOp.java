@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivebase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @TeleOp(name="MecanumOpMode", group="Production")
 //@Disabled
 public class MecanumTeleOp extends OpMode {
@@ -47,9 +44,9 @@ public class MecanumTeleOp extends OpMode {
 
         // Temperary, just for testing!
         if (gamepad1.a) {
-            board.intakeMotor.setPower(0.3);
+            board.intakeMotors.set(0.3);
         } else {
-            board.intakeMotor.setPower(0);
+            board.intakeMotors.set(0);
         }
 
     }
