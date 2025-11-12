@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.pedropathing.geometry.Pose;
 
+
+// Not going to be touched until main core of robot is working.
 public class Camera {
 
     ProgrammingBoard board;

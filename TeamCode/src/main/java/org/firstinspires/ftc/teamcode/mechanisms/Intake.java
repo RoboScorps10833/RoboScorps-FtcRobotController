@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.seattlesolvers.solverslib.command.SubsystemBase;
+
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
-public class Intake {
+public class Intake extends SubsystemBase {
 
     ProgrammingBoard board;
 

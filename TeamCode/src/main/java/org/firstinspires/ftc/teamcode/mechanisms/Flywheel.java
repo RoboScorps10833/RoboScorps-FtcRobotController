@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-public class Flywheel {
+import com.seattlesolvers.solverslib.command.SubsystemBase;
+
+public class Flywheel extends SubsystemBase {
 
     ProgrammingBoard board;
 

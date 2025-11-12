@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.command.Command;
+import com.seattlesolvers.solverslib.command.CommandScheduler;
 
 import java.util.List;
 
@@ -50,4 +52,23 @@ public abstract class Base extends OpMode {
             hub.clearBulkCache();
         }
     }
+
+    /*
+     * Hot garbage boilerplate for SolversLib
+     * Stolen from the implementation of CommandOpMode
+     */
+
+    /**
+     * Must be put in init_loop, otherwise all commands will not run.
+     */
+    public void runSolversLib() {
+        CommandScheduler.getInstance().run();
+    }
+
+    public void scheduleCommand(Command... commands) {
+        CommandScheduler.getInstance().schedule(commands);
+    }
+
+    // Might add an enable and disable for the scheduler later...
+
 }
