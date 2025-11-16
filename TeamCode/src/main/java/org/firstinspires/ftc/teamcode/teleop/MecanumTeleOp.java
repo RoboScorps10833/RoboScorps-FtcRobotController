@@ -4,6 +4,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.mechanisms.Flywheel;
+import org.firstinspires.ftc.teamcode.mechanisms.Intake;
 import org.firstinspires.ftc.teamcode.mechanisms.ProgrammingBoard;
 import org.firstinspires.ftc.teamcode.mechanisms.Drivebase;
 
@@ -19,6 +22,9 @@ public class MecanumTeleOp extends OpMode {
 
     private ProgrammingBoard board = new ProgrammingBoard();
     private Drivebase drivebase = new Drivebase(board);
+    private Flywheel outtake = new Flywheel(board);
+
+    private Intake intake = new Intake(board);
 
 
     @Override
@@ -31,6 +37,8 @@ public class MecanumTeleOp extends OpMode {
 
         // TODO: Add field view of robot with Panels
 
+        telemetry.addData("motorVoltage", board.intakeMotorInner.getCurrent(CurrentUnit.AMPS));
+
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y;
         double theta = gamepad1.right_stick_x;
@@ -41,12 +49,26 @@ public class MecanumTeleOp extends OpMode {
 
         drivebase.steer(x,y,theta);
 
+        if (gamepad1.x) {
+            outtake.spinUp();
+        } else {
+            outtake.spinDown();
+        }
 
         // Temperary, just for testing!
         if (gamepad1.a) {
-            board.intakeMotors.set(0.3);
+            intake.spinUp();
+
         } else {
-            board.intakeMotors.set(0);
+            intake.spinDown();
+        }
+
+        if (gamepad1.right_bumper) {
+            intake.openGate();
+        }
+
+        if (gamepad1.left_bumper) {
+            intake.closeGate();
         }
 
     }

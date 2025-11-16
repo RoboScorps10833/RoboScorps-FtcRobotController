@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
         rollerPower = 0.9;
         reversePower = -0.5;
 
-        openGateAngle = 0;
+        openGateAngle = 50;
         closedGateAngle = 90;
 
         // Find this in an opmode for the future
@@ -40,9 +40,9 @@ public class Intake extends SubsystemBase {
     public void spinUp() {
         board.intakeMotors.set(rollerPower);
 
-        if (board.intakeMotorInner.getCurrent(CurrentUnit.AMPS)>currentThreshold) {
-            board.intakeMotors.set(reversePower);
-        }
+        //if (board.intakeMotorInner.getCurrent(CurrentUnit.AMPS)>currentThreshold) {
+        //    board.intakeMotors.set(reversePower);
+        //}
     }
 
     /**

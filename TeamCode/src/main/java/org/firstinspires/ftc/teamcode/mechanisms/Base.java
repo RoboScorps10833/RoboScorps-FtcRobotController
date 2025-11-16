@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.command.Command;
 import com.seattlesolvers.solverslib.command.CommandScheduler;
+import com.seattlesolvers.solverslib.command.Subsystem;
+
 
 import java.util.List;
 
@@ -57,6 +59,10 @@ public abstract class Base extends OpMode {
      * Hot garbage boilerplate for SolversLib
      * Stolen from the implementation of CommandOpMode
      */
+
+    public void register(Subsystem... subsystems) {
+        CommandScheduler.getInstance().registerSubsystem(subsystems);
+    }
 
     /**
      * Must be put in init_loop, otherwise all commands will not run.

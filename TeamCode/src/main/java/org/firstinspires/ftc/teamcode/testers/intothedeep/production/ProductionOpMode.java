@@ -10,6 +10,7 @@
 
 package org.firstinspires.ftc.teamcode.testers.intothedeep.production;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -17,6 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * The Production OpMode for the robot
  */
 @TeleOp
+@Disabled
 public class ProductionOpMode extends OpMode {
     ProgrammingBoard board = new ProgrammingBoard();
     Robot robot = new Robot(board);

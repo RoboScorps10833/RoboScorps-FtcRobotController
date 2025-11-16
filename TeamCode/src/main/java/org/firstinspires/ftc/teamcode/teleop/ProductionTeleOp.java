@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.RunCommand;
 
@@ -9,16 +10,20 @@ import org.firstinspires.ftc.teamcode.mechanisms.Base;
 
 import kotlin.time.Instant;
 
-@Autonomous(name="VeryBuggyTeleOp")
+@TeleOp(name="VeryBuggyTeleOp")
 public class ProductionTeleOp extends Base {
     @Override
     public void init() {
         initHardware(hardwareMap);
+        register(intake, outtake);
     }
 
 
     @Override
     public void loop() {
+        resetCache();
+        runSolversLib();
+
         // Drivebase will be replaced with PedroPathing later
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y;
@@ -52,8 +57,7 @@ public class ProductionTeleOp extends Base {
 
         // TODO: Create a state machine (so commands won't conflict)
 
-        resetCache();
-        runSolversLib();
+
     }
 
 

@@ -26,7 +26,7 @@ public class ProgrammingBoard {
     public MotorEx intakeMotorInner, intakeMotorOuter;
     public MotorGroup intakeMotors;
     public ServoEx gateServo;
-
+    public MotorEx leftFlywheelMotor, rightFlywheelMotor;
     public MotorGroup FlywheelMotors;
 
     public void init(HardwareMap hardwareMap) {
@@ -50,14 +50,15 @@ public class ProgrammingBoard {
         gateServo = new ServoEx(hardwareMap, "GateServo",0 , 100);
         gateServo.setInverted(false);
 
+        leftFlywheelMotor = new MotorEx(hardwareMap, "LeftFlywheelMotor");
+        rightFlywheelMotor = new MotorEx(hardwareMap, "RightFlywheelMotor");
+
+
         // Outtake
-        FlywheelMotors = new MotorGroup(
-                new MotorEx(hardwareMap, "LeftFlywheelMotor"),
-                new MotorEx(hardwareMap, "RightFlywheelMotor")
-        );
-        FlywheelMotors.setRunMode(Motor.RunMode.VelocityControl);
-        FlywheelMotors.setVeloCoefficients(0,0,0);
-        FlywheelMotors.setFeedforwardCoefficients(0,0,0);
+        FlywheelMotors = new MotorGroup(leftFlywheelMotor, rightFlywheelMotor);
+        FlywheelMotors.setRunMode(Motor.RunMode.RawPower);
+        //FlywheelMotors.setVeloCoefficients(0,0,0);
+        //FlywheelMotors.setFeedforwardCoefficients(0,0,0);
 
 
     }
