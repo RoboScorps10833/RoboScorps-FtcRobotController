@@ -34,9 +34,9 @@ public class ProgrammingBoard {
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "FrontLeftMotor");
         //frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "FrontRightMotor");
-        //frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "BackLeftMotor");
-        //backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backRightMotor = hardwareMap.get(DcMotorEx.class, "BackRightMotor");
         //backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
