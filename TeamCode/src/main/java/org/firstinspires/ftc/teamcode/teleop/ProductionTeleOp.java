@@ -1,14 +1,20 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.pedropathing.geometry.BezierPoint;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.seattlesolvers.solverslib.command.InstantCommand;
 import com.seattlesolvers.solverslib.command.RunCommand;
+import com.seattlesolvers.solverslib.pedroCommand.FollowPathCommand;
 
 import org.firstinspires.ftc.teamcode.mechanisms.Base;
 
 import kotlin.time.Instant;
+
+
 
 @TeleOp(name="VeryBuggyTeleOp")
 public class ProductionTeleOp extends Base {
@@ -16,6 +22,9 @@ public class ProductionTeleOp extends Base {
     public void init() {
         initHardware(hardwareMap);
         register(intake, outtake);
+
+        initTeleOp();
+
     }
 
 
@@ -23,18 +32,34 @@ public class ProductionTeleOp extends Base {
     public void loop() {
         resetCache();
         runSolversLib();
+        follower.update();
 
-        // Drivebase will be replaced with PedroPathing later
-        double x = gamepad1.left_stick_x;
-        double y = -gamepad1.left_stick_y;
-        double theta = gamepad1.right_stick_x;
+        // do stuff with enums or true/false to set red/blue alliance
+        boolean red_alliance = false;
+
+        // follower cannot be accessed outside of base.java or the opmodes
+        // can only be implemented here :/
+        if (drivebase.controlsInversed) {
+            follower.setTeleOpDrive(
+                    -gamepad1.left_stick_y,
+                    -gamepad1.left_stick_x,
+                    -gamepad1.right_stick_x,
+                    true
+            );
+        } else {
+            follower.setTeleOpDrive(
+                    gamepad1.left_stick_y,
+                    gamepad1.left_stick_x,
+                    -gamepad1.right_stick_x,
+                    true
+            );
+        }
 
         if (gamepad1.dpad_down) {
             drivebase.inverseControls();
         }
 
-        drivebase.steer(x,y,theta);
-
+        telemetry.addData("Controls Inverted", drivebase.controlsInversed);
         scheduleCommand(new InstantCommand(outtake::spinUp));
 
         // "Get balls" controls
@@ -46,9 +71,20 @@ public class ProductionTeleOp extends Base {
 
         // Shoot balls
         if (gamepad2.right_trigger > 0.9) {
-            scheduleCommand(new InstantCommand(intake::openGate));
+            scheduleCommand(new InstantCommand(intake::spinUpGate));
         } else {
-            scheduleCommand(new InstantCommand(intake::closeGate));
+            scheduleCommand(new InstantCommand(intake::spinDownGate));
+        }
+
+        if (gamepad1.b) {
+            // lazy generate pathchain
+            Pose cameraPose = vision.getHeadingFromCamera(follower.getPose());
+            Pose basketPose = red_alliance ? redAllianceBasket : blueAllianceBasket;
+            pathChain = () -> follower.pathBuilder()
+                            .addPath(new BezierPoint(cameraPose))
+                                    .setLinearHeadingInterpolation(follower.getHeading(), getAimingAngle(cameraPose,basketPose))
+                                            .build();
+            scheduleCommand(new FollowPathCommand(follower, pathChain.get()));
         }
 
         // Decided to implement that you need to press both at the same time
@@ -56,6 +92,7 @@ public class ProductionTeleOp extends Base {
         // Could do so if I had some if statements or a state machine.
 
         // TODO: Create a state machine (so commands won't conflict)
+
 
 
     }

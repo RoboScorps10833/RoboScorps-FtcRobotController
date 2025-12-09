@@ -2,16 +2,14 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.seattlesolvers.solverslib.command.SubsystemBase;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-
 public class Intake extends SubsystemBase {
 
     ProgrammingBoard board;
 
     double rollerPower;
     double reversePower;
-    int openGateAngle;
-    int closedGateAngle;
+    int gatePower;
+    int gateOffPower;
 
     double currentThreshold;
 
@@ -22,8 +20,8 @@ public class Intake extends SubsystemBase {
         rollerPower = 0.9;
         reversePower = -0.5;
 
-        openGateAngle = 50;
-        closedGateAngle = 90;
+        gatePower = 1;
+        gateOffPower = 0;
 
         // Find this in an opmode for the future
         currentThreshold = 0.0;
@@ -56,15 +54,20 @@ public class Intake extends SubsystemBase {
     /**
      * Turns the gate to the open position
      */
-    public void openGate() {
-        board.gateServo.set(openGateAngle);
+    public void spinUpGate() {
+        board.gateServo.setPower(gatePower);
     }
+
+    public void spinDownGate() {
+        board.gateServo.setPower(0);
+    }
+
 
     /**
      * Turns the gate to the closed position
      */
-    public void closeGate() {
-        board.gateServo.set(closedGateAngle);
+    public void pinUpGate() {
+        board.gateServo.setPower(gateOffPower);
     }
 
     public void unstuckRollers() {

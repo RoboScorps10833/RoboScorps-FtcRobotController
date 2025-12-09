@@ -1,11 +1,16 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.hardware.motors.CRServoEx;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 /**
  * A class that abstracts away hardware mapping and setting making.
@@ -25,20 +30,22 @@ public class ProgrammingBoard {
 
     public MotorEx intakeMotorInner, intakeMotorOuter;
     public MotorGroup intakeMotors;
-    public ServoEx gateServo;
+    public com.qualcomm.robotcore.hardware.CRServo gateServo;
     public MotorEx leftFlywheelMotor, rightFlywheelMotor;
     public MotorGroup FlywheelMotors;
+
+    public WebcamName webcam;
 
     public void init(HardwareMap hardwareMap) {
         // -------------- Drivebase -------------- //
         frontLeftMotor = hardwareMap.get(DcMotorEx.class, "FrontLeftMotor");
         //frontLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         frontRightMotor = hardwareMap.get(DcMotorEx.class, "FrontRightMotor");
-        frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        //frontRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backLeftMotor = hardwareMap.get(DcMotorEx.class, "BackLeftMotor");
         backLeftMotor.setDirection(DcMotorEx.Direction.REVERSE);
         backRightMotor = hardwareMap.get(DcMotorEx.class, "BackRightMotor");
-        //backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorEx.Direction.REVERSE);
 
         // Intake
         intakeMotorInner = new MotorEx(hardwareMap, "IntakeMotorInner");
@@ -47,12 +54,13 @@ public class ProgrammingBoard {
         intakeMotors = new MotorGroup(intakeMotorInner, intakeMotorOuter);
         intakeMotors.setRunMode(Motor.RunMode.RawPower);
 
-        gateServo = new ServoEx(hardwareMap, "GateServo",0 , 100);
-        gateServo.setInverted(false);
+        gateServo = hardwareMap.get(CRServo.class, "GateServo");
+
 
         leftFlywheelMotor = new MotorEx(hardwareMap, "LeftFlywheelMotor");
+        //leftFlywheelMotor.setInverted(true);
         rightFlywheelMotor = new MotorEx(hardwareMap, "RightFlywheelMotor");
-
+        rightFlywheelMotor.setInverted(true);
 
         // Outtake
         FlywheelMotors = new MotorGroup(leftFlywheelMotor, rightFlywheelMotor);
@@ -61,6 +69,7 @@ public class ProgrammingBoard {
         //FlywheelMotors.setFeedforwardCoefficients(0,0,0);
 
 
+        webcam = hardwareMap.get(WebcamName.class, "Webcam 1"); // Left as default name
     }
 
     // TODO: Bulk reading method with Lynx Module

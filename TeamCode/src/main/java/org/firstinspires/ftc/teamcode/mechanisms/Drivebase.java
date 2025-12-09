@@ -8,7 +8,7 @@ public class Drivebase {
     ProgrammingBoard board;
 
     // Variables go here so you can call them inside methods
-    private boolean controlsInversed;
+    public boolean controlsInversed;
 
     public Drivebase(ProgrammingBoard board) {
         this.board = board;
