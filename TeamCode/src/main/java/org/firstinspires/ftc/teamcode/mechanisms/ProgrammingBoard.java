@@ -58,9 +58,9 @@ public class ProgrammingBoard {
 
 
         leftFlywheelMotor = new MotorEx(hardwareMap, "LeftFlywheelMotor");
-        //leftFlywheelMotor.setInverted(true);
+        leftFlywheelMotor.setInverted(true);
         rightFlywheelMotor = new MotorEx(hardwareMap, "RightFlywheelMotor");
-        rightFlywheelMotor.setInverted(true);
+        //rightFlywheelMotor.setInverted(true);
 
         // Outtake
         FlywheelMotors = new MotorGroup(leftFlywheelMotor, rightFlywheelMotor);
