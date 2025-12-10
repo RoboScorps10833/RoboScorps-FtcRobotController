@@ -5,6 +5,7 @@ import com.seattlesolvers.solverslib.command.SubsystemBase;
 public class Flywheel extends SubsystemBase {
 
     ProgrammingBoard board;
+    public boolean flywheelToggle = true;
 
     public Flywheel(ProgrammingBoard board) {
         // Want to use the external board provided

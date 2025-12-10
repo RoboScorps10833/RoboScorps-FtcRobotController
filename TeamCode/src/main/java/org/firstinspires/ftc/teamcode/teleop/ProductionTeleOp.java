@@ -16,7 +16,7 @@ import kotlin.time.Instant;
 
 
 
-@TeleOp(name="VeryBuggyTeleOp")
+@TeleOp(name="ProductionOpMode?")
 public class ProductionTeleOp extends Base {
     @Override
     public void init() {
@@ -55,12 +55,21 @@ public class ProductionTeleOp extends Base {
             );
         }
 
+        if (outtake.flywheelToggle) {
+            scheduleCommand(new InstantCommand(outtake::spinUp));
+        } else {
+            scheduleCommand(new InstantCommand(outtake::spinDown));
+        }
+
+        if (gamepad2.right_trigger > 0.9) {
+            outtake.flywheelToggle = !outtake.flywheelToggle;
+        }
+
         if (gamepad1.dpad_down) {
             drivebase.inverseControls();
         }
 
         telemetry.addData("Controls Inverted", drivebase.controlsInversed);
-        scheduleCommand(new InstantCommand(outtake::spinUp));
 
         // "Get balls" controls
         if (gamepad2.x) {
