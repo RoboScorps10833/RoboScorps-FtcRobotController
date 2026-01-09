@@ -6,6 +6,7 @@ public class Flywheel extends SubsystemBase {
 
     ProgrammingBoard board;
     public boolean flywheelToggle = true;
+    private double tickSpeed = 1000;
 
     public Flywheel(ProgrammingBoard board) {
         // Want to use the external board provided
@@ -16,14 +17,18 @@ public class Flywheel extends SubsystemBase {
      * Turns on the Flywheel
      */
     public void spinUp() {
-        board.FlywheelMotors.set(1);
+        board.rightFlywheelMotor.setVelocity(tickSpeed);
+        board.leftFlywheelMotor.setVelocity(tickSpeed);
+
     }
 
     /**
      * Turns off the flywheel
      */
     public void spinDown() {
-        board.FlywheelMotors.set(0);
+        board.rightFlywheelMotor.setVelocity(0);
+        board.leftFlywheelMotor.setVelocity(0);
+
     }
 
     public void calculateFlywheelSpeeds() {

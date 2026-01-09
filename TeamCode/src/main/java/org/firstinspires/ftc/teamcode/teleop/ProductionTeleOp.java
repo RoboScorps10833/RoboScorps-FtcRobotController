@@ -72,29 +72,23 @@ public class ProductionTeleOp extends Base {
         telemetry.addData("Controls Inverted", drivebase.controlsInversed);
 
         // "Get balls" controls
-        if (gamepad2.x) {
+        if (gamepad2.left_trigger > 0.9) {
             scheduleCommand(new InstantCommand(intake::spinUp));
         } else {
             scheduleCommand(new InstantCommand(intake::spinDown));
         }
 
-        // Shoot balls
-        if (gamepad2.right_trigger > 0.9) {
-            scheduleCommand(new InstantCommand(intake::spinUpGate));
-        } else {
-            scheduleCommand(new InstantCommand(intake::spinDownGate));
-        }
 
-        if (gamepad1.b) {
-            // lazy generate pathchain
-            Pose cameraPose = vision.getHeadingFromCamera(follower.getPose());
-            Pose basketPose = red_alliance ? redAllianceBasket : blueAllianceBasket;
-            pathChain = () -> follower.pathBuilder()
-                            .addPath(new BezierPoint(cameraPose))
-                                    .setLinearHeadingInterpolation(follower.getHeading(), getAimingAngle(cameraPose,basketPose))
-                                            .build();
-            scheduleCommand(new FollowPathCommand(follower, pathChain.get()));
-        }
+//        if (gamepad1.b) {
+//            // lazy generate pathchain
+//            Pose cameraPose = vision.getHeadingFromCamera(follower.getPose());
+//            Pose basketPose = red_alliance ? redAllianceBasket : blueAllianceBasket;
+//            pathChain = () -> follower.pathBuilder()
+//                            .addPath(new BezierPoint(cameraPose))
+//                                    .setLinearHeadingInterpolation(follower.getHeading(), getAimingAngle(cameraPose,basketPose))
+//                                            .build();
+//            scheduleCommand(new FollowPathCommand(follower, pathChain.get()));
+//        }
 
         // Decided to implement that you need to press both at the same time
         // Don't want to schedule a command with the opposite thing in there

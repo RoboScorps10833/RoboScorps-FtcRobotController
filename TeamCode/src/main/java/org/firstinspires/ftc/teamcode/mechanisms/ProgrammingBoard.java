@@ -56,15 +56,23 @@ public class ProgrammingBoard {
 
         gateServo = hardwareMap.get(CRServo.class, "GateServo");
 
-
-        leftFlywheelMotor = new MotorEx(hardwareMap, "LeftFlywheelMotor");
+        leftFlywheelMotor = new MotorEx(hardwareMap, "LeftFlywheelMotor", 28, 6000);
         leftFlywheelMotor.setInverted(true);
-        rightFlywheelMotor = new MotorEx(hardwareMap, "RightFlywheelMotor");
+        leftFlywheelMotor.setRunMode(Motor.RunMode.VelocityControl);
+        leftFlywheelMotor.setVeloCoefficients(0.01, 0.0, 0.0);
+        leftFlywheelMotor.setFeedforwardCoefficients(215.0, 1.1);
+
+        rightFlywheelMotor = new MotorEx(hardwareMap, "RightFlywheelMotor", 28, 6000);
+        rightFlywheelMotor.setRunMode(Motor.RunMode.VelocityControl);
         //rightFlywheelMotor.setInverted(true);
+        rightFlywheelMotor.setVeloCoefficients(0.01, 0.0, 0.0);
+        rightFlywheelMotor.setFeedforwardCoefficients(215.0, 1.2);
 
         // Outtake
-        FlywheelMotors = new MotorGroup(leftFlywheelMotor, rightFlywheelMotor);
-        FlywheelMotors.setRunMode(Motor.RunMode.RawPower);
+//        FlywheelMotors = new MotorGroup(leftFlywheelMotor, rightFlywheelMotor);
+//        FlywheelMotors.setRunMode(Motor.RunMode.VelocityControl);
+
+
         //FlywheelMotors.setVeloCoefficients(0,0,0);
         //FlywheelMotors.setFeedforwardCoefficients(0,0,0);
 
