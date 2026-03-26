@@ -24,9 +24,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
 
-    implementation 'com.pedropathing:ftc:2.0.4' // Pedropathing
+    implementation 'com.pedropathing:ftc:2.1.1' // Pedropathing
     implementation 'com.pedropathing:telemetry:1.0.0'
-    implementation 'com.bylazar:fullpanels:1.0.10' // Panels
+    implementation 'com.bylazar:fullpanels:1.0.12' // Panels
     implementation 'com.acmerobotics.dashboard:dashboard:0.5.0'// dashboard
 
 }
