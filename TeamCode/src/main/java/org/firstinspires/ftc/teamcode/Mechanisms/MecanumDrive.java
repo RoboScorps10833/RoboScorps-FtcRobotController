@@ -12,9 +12,17 @@ public class MecanumDrive extends OpMode {
     DcMotor backRightMotor;
 
     public void moveDriveTrain(){
-        double vertical;
-        double horizontal;
-        double pivot;
+        double y = 0;
+        double x = 0;
+        double rx = 0;
+        y = -gamepad1.left_stick_y;
+        x = gamepad1.right_stick_x;
+        rx = gamepad1.right_stick_x;
+
+        frontRightMotor.setPower(y + x + rx);
+        backLeftMotor.setPower(y - x + rx);
+        frontLeftMotor.setPower(y - x - rx);
+        backRightMotor.setPower(y + x - rx);
 
     }
 
