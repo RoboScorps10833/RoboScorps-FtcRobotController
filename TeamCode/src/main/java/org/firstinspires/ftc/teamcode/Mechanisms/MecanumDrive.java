@@ -18,6 +18,7 @@ public class MecanumDrive extends OpMode {
         y = -gamepad1.left_stick_y;
         x = gamepad1.right_stick_x;
         rx = gamepad1.right_stick_x;
+        // y might be speed?? , x turn and rx strafe
 
         frontRightMotor.setPower(y + x + rx);
         backLeftMotor.setPower(y - x + rx);
