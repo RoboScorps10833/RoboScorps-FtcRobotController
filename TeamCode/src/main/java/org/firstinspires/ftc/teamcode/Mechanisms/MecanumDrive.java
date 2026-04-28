@@ -11,28 +11,29 @@ public class MecanumDrive extends OpMode {
     DcMotor backLeftMotor;
     DcMotor backRightMotor;
 
-    public void moveDriveTrain(){
-        double y = 0;
-        double x = 0;
-        double rx = 0;
-        y = -gamepad1.left_stick_y;
-        x = gamepad1.right_stick_x;
-        rx = gamepad1.right_stick_x;
-        // y might be speed?? , x turn and rx strafe
-
-        frontRightMotor.setPower(y + x + rx);
-        backLeftMotor.setPower(y - x + rx);
-        frontLeftMotor.setPower(y - x - rx);
-        backRightMotor.setPower(y + x - rx);
-
-    }
-
-
+    @Override
     public void init() {
         frontLeftMotor = hardwareMap.get(DcMotor.class,"frontLeftMotor");
         frontRightMotor = hardwareMap.get(DcMotor.class,"frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class,"backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class,"backRightMotor");
+    }
+    public void moveDriveTrain() {
+        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.right_stick_x;
+        double rx = gamepad1.right_stick_x;
+        // on line 23, if it's right or left
+
+        double frontRightPower = y - x - rx;
+        double frontLeftPower = y + x + rx;
+        double backRightPower = y + x - rx;
+        double backLeftPower = y - x + rx;
+
+        frontRightMotor.setPower(frontRightPower);
+        frontLeftMotor.setPower(frontLeftPower);
+        backRightMotor.setPower(backRightPower);
+        backLeftMotor.setPower(backLeftPower);
+
     }
 
     @Override
@@ -42,6 +43,7 @@ public class MecanumDrive extends OpMode {
 
     @Override
     public void loop() {
+        moveDriveTrain();
 
     }
 
