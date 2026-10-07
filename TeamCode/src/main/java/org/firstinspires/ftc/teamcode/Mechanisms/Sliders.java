@@ -19,7 +19,7 @@ public class Sliders extends OpMode {
      if (gamepad1.a){
          RightVertExtMotor.setPower(1);
          LeftVertExtMotor.setPower(1);
-     } else {
+     } else if {gamepad1.b
          RightVertExtMotor.setPower(0);
          LeftVertExtMotor.setPower(0);
 

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Mechanisms;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class MecanumDrive extends OpMode {
@@ -28,7 +29,10 @@ public class MecanumDrive extends OpMode {
         double frontLeftPower = y + x + rx;
         double backRightPower = y + x - rx;
         double backLeftPower = y - x + rx;
-
+        frontRightMotor.setDirection(DcMotor.Direction.FORWARD);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         frontRightMotor.setPower(frontRightPower);
         frontLeftMotor.setPower(frontLeftPower);
         backRightMotor.setPower(backRightPower);
@@ -42,8 +46,33 @@ public class MecanumDrive extends OpMode {
     }
 
     @Override
+    //Driver Movements
     public void loop() {
-        moveDriveTrain();
+        if (gamepad1.left_stick_y > 0){
+          frontRightMotor.setPower(1);
+          frontLeftMotor.setPower(1);
+          backLeftMotor.setPower(-1);
+          backRightMotor.setPower(-1);
+        } else if (gamepad1.left_stick_y < 0) {
+            //move left
+            frontRightMotor.setPower(-1);
+            frontLeftMotor.setPower(-1);
+            backLeftMotor.setPower(-1);
+            backRightMotor.setPower(-1);
+        }
+        if (gamepad1.right_stick_x > 0){
+            //move right
+            frontRightMotor.setPower(1);
+            frontLeftMotor.setPower(1);
+            backLeftMotor.setPower(1);
+            backRightMotor.setPower(1);
+        } else if (gamepad1.right_stick_x < 0) {
+            //move backwards
+            frontRightMotor.setPower(-1);
+            frontLeftMotor.setPower(-1);
+            backLeftMotor.setPower(1);
+            backRightMotor.setPower(1);
+        }
 
     }
 
