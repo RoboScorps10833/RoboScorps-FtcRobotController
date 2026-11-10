@@ -45,7 +45,6 @@ public class MecanumDrive extends OpMode {
     //Driver Movements
     public void loop() {
         moveDriveTrain();
-
     }
 
 }
