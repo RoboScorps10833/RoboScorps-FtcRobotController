@@ -40,39 +40,11 @@ public class MecanumDrive extends OpMode {
 
     }
 
-    @Override
-    public void init_loop() {
-
-    }
 
     @Override
     //Driver Movements
     public void loop() {
-        if (gamepad1.left_stick_y > 0){
-          frontRightMotor.setPower(1);
-          frontLeftMotor.setPower(1);
-          backLeftMotor.setPower(-1);
-          backRightMotor.setPower(-1);
-        } else if (gamepad1.left_stick_y < 0) {
-            //move left
-            frontRightMotor.setPower(-1);
-            frontLeftMotor.setPower(-1);
-            backLeftMotor.setPower(-1);
-            backRightMotor.setPower(-1);
-        }
-        if (gamepad1.right_stick_x > 0){
-            //move right
-            frontRightMotor.setPower(1);
-            frontLeftMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
-        } else if (gamepad1.right_stick_x < 0) {
-            //move backwards
-            frontRightMotor.setPower(-1);
-            frontLeftMotor.setPower(-1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
-        }
+        moveDriveTrain();
 
     }
 
