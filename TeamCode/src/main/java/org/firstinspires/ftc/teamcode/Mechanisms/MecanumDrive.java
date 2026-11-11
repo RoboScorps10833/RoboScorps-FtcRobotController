@@ -11,6 +11,7 @@ public class MecanumDrive extends OpMode {
     DcMotor frontRightMotor;
     DcMotor backLeftMotor;
     DcMotor backRightMotor;
+    DcMotor flywheelMotor;
 
     @Override
     public void init() {
@@ -18,6 +19,10 @@ public class MecanumDrive extends OpMode {
         frontRightMotor = hardwareMap.get(DcMotor.class,"frontRightMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class,"backLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class,"backRightMotor");
+        flywheelMotor = hardwareMap.get(DcMotor.class,"smallFlywheelMotor");
+
+        flywheelMotor.setPower(1);
+
     }
     public void moveDriveTrain() {
         double y = -gamepad1.left_stick_y;
